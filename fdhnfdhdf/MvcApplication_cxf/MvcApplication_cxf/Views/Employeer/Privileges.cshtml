@@ -1,0 +1,157 @@
+﻿@{
+    ViewBag.Title = "Privileges";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "员工管理";
+}
+<script>
+
+    $(function () {
+        //$("#left_menu > li").eq(5).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(5).find("ul li").eq(2).addClass("active");
+
+
+        $(".员工管理").addClass("active").siblings().removeClass("active");
+        $(".员工调动").addClass("active");
+
+        //调动
+        $(".upd").click(function () {
+            
+            //获取调动人的id
+            var id = $("#HaverID").val()
+            //获取调动的岗位(找到选中的单选框) 
+            var num = "";
+            $(".allpost").find("ul li").find("input[type='radio']").each(function (index, item) {
+                if ($(item).is(":checked")) {
+                    //获得权限id
+                    num = $(item).val();
+                }
+            });
+
+            $.post('/Employeer/ExeUpdEmployeerPost', { id: id, num: num }, function (rs) {
+                if (rs) {
+                    alert("岗位更换成功！");
+                }
+            });
+
+
+        });
+    });
+    function getid() {
+        location.href = "/Employeer/Privileges?id=" + $("#HaverID").val();
+    }
+</script>
+
+<style>
+    li {
+        list-style-type: none;
+    }
+</style>
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">员工管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">员工调动</a>
+        </li>
+
+    </ul>
+
+}
+<h4 class="btn disabled">员工调动</h4>
+<br />
+@{
+    //查询所有员工
+    List<Model.EmployeeInfo> emlist = (List<Model.EmployeeInfo>)ViewBag.emlist;
+
+    //查询岗位
+    List<Model.PostInfo> postlist = (List<Model.PostInfo>)ViewBag.postlist;
+    //查询部门
+    List<Model.Dept> deptlist = (List<Model.Dept>)ViewBag.deptlist;
+    
+}
+
+<div class="control-group">
+    <label class="control-label"><a class="badge badge-important">被调动人</a><span class="required">*</span></label>
+    <div class="controls">
+        <span class="help-block">请选择被调动人：</span>
+        <select class="span6 m-wrap" id="HaverID" onchange="getid()">
+
+            @{
+                if (ViewBag.selEmp != null)
+                {
+                    Model.EmployeeInfo einfo = ViewBag.selEmp as Model.EmployeeInfo;
+                <option value="@einfo.ID">@einfo.LoginName</option>
+                }
+                else
+                {
+                <option value="">选择...</option>
+                }
+            }
+
+            @{
+                foreach (var item in emlist.Where(a => a.ID != 1))
+                {
+                <option value="@item.ID">@item.LoginName</option>
+                }
+            }
+        </select>
+        <a class="btn mini red upd"><i class="icon-edit"></i>调动</a>
+    </div>
+</div>
+
+
+
+<h4 class="label label-warning" style="float: left;">（一）员工调动</h4>
+<hr />
+<br />
+<div class="allpost">
+    @{
+    
+        
+        foreach (var d in deptlist)
+        {
+        <ul style="float: left;">
+            @{
+                <li class="badge badge-warning">@d.DeptName</li>
+            foreach (var p in postlist.Where(a => a.DeptID == d.ID))
+            {
+                <li>
+                    <div class="controls">
+                        <label class="radio">
+                            <span class="radio">
+                                <input type="radio"float: left;" name="optionsRadios" value="@p.ID" />@p.JobTitle
+                            </span>
+                        </label>
+                    </div>
+                </li>    
+            }
+            }
+            <li>
+                <hr />
+            </li>
+        </ul>
+        }
+            
+    
+    }
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+

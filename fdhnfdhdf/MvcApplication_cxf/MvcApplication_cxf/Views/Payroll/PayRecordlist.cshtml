@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "PayRecordlist";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "薪酬管理";
+}
+<script src="~/media/js/jquery-1.10.1.min.js"></script>
+<script>
+
+    $(function () {
+
+        //$("#left_menu > li").eq(7).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(7).find("ul li").eq(0).addClass("active");
+
+        $(".薪酬管理").addClass("active").siblings().removeClass("active");
+        $(".工资发放记录").addClass("active");
+
+        //删除员工工资发放记录
+        $(".del").click(function () {
+            $.post('/Payroll/PayRecordlist', { id: $(this).attr("getid") }, function (rs) {
+                location.href = "/Payroll/PayRecordlist";
+            });
+        });
+
+        //搜索
+        $(".search").click(function () {
+
+            $.post('/Payroll/PayRecordlist', { year: $("#year").val().toString().trim(), month: $("#month").val().toString().trim(), day: $("#day").val().toString().trim() }, function (rs) {
+                if (rs) {
+                    location.href = "/Payroll/PayRecordlist?year=" + $("#year").val().toString().trim() + "&month=" + $("#month").val().toString().trim() + "&day=" + $("#day").val().toString().trim();
+                    alert("等待搜索...")
+                }
+            })
+        })
+
+    })
+</script>
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">薪酬管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">工资发放记录</a>
+        </li>
+
+    </ul>
+}
+
+@{
+    //查询所有员工
+    List<Model.EmployeeInfo> emlist = (List<Model.EmployeeInfo>)ViewBag.allem;
+    //查询所有员工工资记录
+    List<Model.SalaryRecord> srlist = (List<Model.SalaryRecord>)ViewBag.srlist;
+}
+
+<h2>工资发放记录</h2>
+
+<div class="span6">
+    <div class="dataTables_filter" id="sample_1_filter">
+        请输入发放时间:
+        <input type="text" id="year" value="@ViewBag.year"style="width: 50px; height: 13px;">年
+        <input type="text" id="month" value="@ViewBag.month"style="width: 50px; height: 13px;">月
+        <input type="text" id="day" value="@ViewBag.day"style="width: 50px; height: 13px;">日
+        <a class="red small btn search"><i class="icon-search">搜索</i></a>
+        
+    </div>
+</div>
+<br />
+<br />
+<div class="portlet box red">
+
+
+
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-cogs"></i>工资发放记录</div>
+        <div class="tools">
+            <a href="javascript:;" class="collapse"></a>
+            <a href="#portlet-config" data-toggle="modal" class="config"></a>
+            <a href="javascript:;" class="reload"></a>
+            <a href="javascript:;" class="remove"></a>
+        </div>
+    </div>
+
+
+    <div class="portlet-body flip-scroll" style="display: block;">
+        <table class="table-bordered table-striped table-condensed flip-content">
+            <thead class="flip-content">
+                <tr>
+                    <th>员工</th>
+                    <th>发放工资</th>
+                    <th>发放时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{if (srlist != null)
+                  {
+                      foreach (var item in srlist)
+                      {
+                    <tr style="text-align: center;">
+                        @{
+                          var name = "";
+                          foreach (var people in emlist)
+                          {
+                              if (item.EmployeeId == people.ID)
+                              {
+                                  name = people.LoginName;
+                              }
+                          }
+                        }
+                        <td>@name</td>
+                        <td>@item.TotalSalary</td>
+                        <td>@item.PayTime</td>
+                        <td>
+                            <a href="#" class="btn mini green del" getid="@item.ID"><i class="icon-edit"></i>删除</a>
+                        </td>
+                    </tr>
+                      }
+                  }
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

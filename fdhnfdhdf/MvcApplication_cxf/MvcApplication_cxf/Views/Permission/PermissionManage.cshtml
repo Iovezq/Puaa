@@ -1,0 +1,225 @@
+﻿@{
+    ViewBag.Title = "PermissionManage";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "权限管理";
+}
+<script>
+
+    $(function () {
+
+        //$("#left_menu > li").eq(9).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(9).find("ul li").eq(0).addClass("active");
+
+        $(".员工权限管理").addClass("active").siblings().removeClass("active");
+        $(".权限管理").addClass("active");
+
+        //授权
+        $(".giveuerper").click(function () {
+
+            //找到所有选中的复选框
+            var nums = "";
+            $(".addper").find("ul li").find("input[type='checkbox']").each(function (index, item) {
+                if ($(item).is(":checked")) {
+                    //获得权限id
+                    nums += $(item).val() + ",";
+                }
+            });
+
+            $.get('/Permission/ExeAddPer', { nums: nums }, function (rs) {
+                if (rs) {
+                    alert("授权成功！");
+                    location.href = "/Permission/ExeGetPerByEmID?id=" + $("#HaverID").val();
+                }
+            });
+        });
+
+        //全选
+        $(".ckbt").click(function () {
+
+            if ($(this).is(":checked")) {
+                $(this).parent().parent().parent().parent().find("li").each(function (index, item) {
+                    $(item).find("div span").addClass("checked");
+                    $(item).find("div span input").attr("checked", "checked");
+                });
+
+            } else {
+                $(this).parent().parent().parent().parent().find("li").each(function (index, item) {
+                    $(item).find("div span").removeClass("checked");
+                    $(item).find("div span input").filter(":checkbox").removeAttr("checked");
+                });
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+    });
+
+    function lookfor() {
+
+        location.href = "/Permission/ExeGetPerByEmID?id=" + $("#HaverID").val();
+    }
+
+</script>
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">权限管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">权限管理</a>
+        </li>
+
+    </ul>
+
+}
+
+<style>
+    li {
+        list-style-type: none;
+    }
+</style>
+
+<h4 class="btn disabled">权限管理</h4>
+
+@{
+    //查询所有员工
+    List<Model.EmployeeInfo> emlist = (List<Model.EmployeeInfo>)ViewBag.emlist;
+
+    //查询所有权限（查询菜单栏）
+    List<Model.PermissionInfo> all = (List<Model.PermissionInfo>)ViewBag.all;
+
+    //单个员工所有权限ids(个人权限+角色权限)
+    List<Model.PermissionInfo> havepers = (List<Model.PermissionInfo>)ViewBag.havepers;
+
+    //根据员工id和员工角色id 查询该员工没有的权限(角色权限+个人权限)
+
+    List<Model.PermissionInfo> nothavepers = (List<Model.PermissionInfo>)ViewBag.nothavepers;
+   
+    
+}
+<div class="control-group">
+
+    <div class="controls">
+        <span class="help-block">请选择
+            <label class="control-label"><a class="badge badge-important">被授权人</a><span class="required">：</span></label></span>
+        @{
+            int? id = 0;
+            var name = "";
+            if (Session["id"] != null)
+            {
+                id = Convert.ToInt32(Session["id"]);
+                Dal.EmployeeDal emdal = new Dal.EmployeeDal();
+                Model.EmployeeInfo em = emdal.GetEmployeerByID(id);
+                name = em.LoginName;
+            }
+            else
+            {
+                name = "请选择...";
+            }
+        }
+        <select class="span3 m-wrap" id="HaverID" onchange="lookfor()">
+
+            <option value="@id">@name</option>
+            @{               
+                foreach (var item in emlist.Where(a => a.ID != 1))
+                {                  
+                <option value="@item.ID">@item.LoginName</option>
+                }
+            }
+        </select>
+        <a class="btn mini red giveuerper"><i class="icon-edit"></i>授权</a>
+    </div>
+</div>
+
+
+<h4 class="label label-success" style="float: left;">（一）页面权限分配</h4>
+<hr />
+<br />
+<br />
+
+<span class="addper">
+    @{
+        //判断该用户有无权限
+        if (havepers == null)
+        {
+            foreach (var p in all.Where(a => a.ParentID == null))
+            {
+        <ul style="float: left;">
+            @{                       
+                <li class="badge badge-success">@p.PageName<input type="checkbox" class="ckbt" style="float: left;"  value="@p.ID" getid="@p.ID" /></li>
+           
+                foreach (var c in all.Where(a => a.ParentID == p.ID))
+                {
+                <li>
+                    <input type="checkbox" value="@c.ID"/>@c.PageName</li>
+                }
+            }
+        </ul> 
+            }
+        }
+        else
+        {
+        <b class="badge badge-important" style="float: left; clear: both;">用户已有的权限</b>
+            /*用户已有的权限*/
+
+
+
+            foreach (var p in havepers.Where(a => a.ParentID == null))
+            {
+        <ul style="float: left;">
+            <li class="badge badge-success">@p.PageName<input type="checkbox" class="ckbt" style="float: left;" checked value="@p.ID" /></li>
+           @{ foreach (var c in havepers.Where(a => a.ParentID == p.ID))
+                {                     
+                <li>
+                    <input type="checkbox" checked value="@c.ID"/>@c.PageName</li>
+            }}
+        </ul>   
+                       
+            }
+           
+            
+        <b class="badge badge-important" style="float: left; clear: both;">用户未有的权限</b> 
+            /*用户未有的权限*/
+            foreach (var p in nothavepers.Where(a => a.ParentID == null))
+            {
+        <ul style="float: left;">
+            <li class="badge badge-success">@p.PageName<input type="checkbox" class="ckbt" style="float: left;"  value="@p.ID" /></li>
+
+            @{
+                foreach (var c in nothavepers.Where(a => a.ParentID == p.ID))
+                {
+                <li>
+                    <input type="checkbox" value="@c.ID"/>@c.PageName</li>
+                }
+            }
+        </ul>
+            }
+
+
+
+
+
+        }
+    }</span>
+
+
+
+
+
+
+
+
+

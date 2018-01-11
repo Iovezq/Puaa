@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "DeptEmployeer";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "部门管理";
+}
+
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">部门管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">部门岗位</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">部门员工</a>
+        </li>
+
+    </ul>
+
+}
+<script>
+
+    $(function () {
+        $("#left_menu > li").eq(4).addClass("active").siblings().removeClass("active");
+        $("#left_menu > li").eq(4).find("ul li").eq(0).addClass("active");
+
+    });
+</script>
+
+<h2>部门员工</h2>
+
+
+<div class="span11">
+
+    <!-- BEGIN SAMPLE TABLE PORTLET-->
+
+    <div class="portlet">
+
+        <div class="portlet-title">
+
+            <div class="caption"><i class="icon-user"></i>部门下的员工信息</div>
+
+            <div class="tools">
+
+                <a href="javascript:;" class="collapse"></a>
+
+                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+
+                <a href="javascript:;" class="reload"></a>
+
+                <a href="javascript:;" class="remove"></a>
+
+            </div>
+
+        </div>
+
+        <div class="portlet-body">
+
+            <table class="table table-striped table-bordered table-advance table-hover">
+
+                <thead>
+                    <tr>
+                        <th><i class="icon-user">员工姓名</i></th>
+                        <th><i class="icon-user-md"></i>员工性别</th>
+                        <th><i class="icon-bitbucket">员工岗位</i></th>
+                        <th><i class="icon-cog">所在部门</i></th>
+                        <th><i class="icon-dollar"></i>员工工资</th>
+                       
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        List<Model.EmployeeInfo> list = (List<Model.EmployeeInfo>)ViewBag.DeptEmployeer;
+                        var sex = "";
+                    }
+
+                    @{
+                        if (list.Count == 0)
+                        {
+                        <tr>
+                            <td colspan="6">
+                                <h1 style="color: red;"><i class="icon-bullhorn"></i></h1>
+                                <h4 class="text-error">该部门下还未有员工入职。</h4>
+                            </td>
+                        </tr>
+                        }
+                    }
+
+                    @{
+                        foreach (var item in list)
+                        {
+                        <tr>
+                            <td><a href="#">@item.LoginName</a></td>
+                            <td>
+                                @{
+                            if (item.Sex == 0)
+                            {
+                                sex = "男";
+                            }
+                            else
+                            {
+                                sex = "女";
+                            }
+                                }
+                                @sex
+                            </td>
+
+                            @{
+                            //查询部门id与岗位id
+                            Dal.DeptDal ddal = new Dal.DeptDal();
+                            Model.Dept d = null;
+                            if (ViewBag.deptid != null)
+                            {
+                                d = ddal.GetDeptOne(Convert.ToInt32(ViewBag.deptid));
+                            }
+                            Dal.PostDal pdal = new Dal.PostDal();
+                            var p = pdal.GetPostOne(item.PostID);
+                            }
+
+                            <td>@p.JobTitle</td>
+                            <td>@d.DeptName</td>
+                            <td>
+                                @{
+                            //根据员工id查询员工工资
+                            Dal.EmployeeDal emdal = new Dal.EmployeeDal();
+                            Model.Payroll pay = emdal.GetPayByid(item.ID);
+                            string toltal = "";
+                            if (pay == null)
+                            {
+                                toltal = "待定";
+                            }
+                            else
+                            {
+                                toltal = (pay.BasicWage + pay.LunchAllowance + pay.MeritPay + pay.TrafficAllowance + pay.CommunicationAllowance).ToString();
+                            }     
+                                }
+                                @toltal
+                            </td>
+                             </tr>
+                        }
+                    }
+
+                </tbody>
+
+
+                @* 工资的三种状态（已支付，支付中，预支）
+                <span class="label label-warning label-mini">Pending</span>
+                <span class="label label-danger label-mini">Overdue</span>
+                <span class="label label-success label-mini">Paid</span>
+                 *@
+
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- END SAMPLE TABLE PORTLET-->
+    <a href="/Dept/DeptPost?DeptID=@ViewBag.deptid" class="btn icn-only"><i class="m-icon-swapleft"></i>返回</a>
+</div>
+
+

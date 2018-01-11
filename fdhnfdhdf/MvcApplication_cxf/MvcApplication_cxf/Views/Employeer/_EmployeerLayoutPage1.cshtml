@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "DetailEmployeer";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+}
+@{
+    //获取当前登录用户
+    Model.EmployeeInfo loginer = (Model.EmployeeInfo)Session["Employeer"];
+    //获取查询员工的id
+    var id = Session["emid"];
+
+}
+<script>
+
+    $(function () {
+
+        $("#left_menu > li").eq(5).addClass("active").siblings().removeClass("active");
+        $("#left_menu > li").eq(5).find("ul li").eq(0).addClass("active");
+
+        //单击更新
+        $("#updEmp").click(function () {
+            //如果当前用户不是BOSS并且修改的是BOSS则不允许进入更新信息页面（只能查看BOSS信息）
+            if ($(this).attr("loginer") != "1" && $(this).attr("selemid") == "1")
+            {
+                alert("没有权限修改！");
+                $(this).attr("href", "/Employeer/SelProfile?id=@id");
+            }
+        });
+
+
+
+    });
+
+</script>
+
+<ul class="nav nav-tabs" id="childmenu">
+
+    <li class=""><a href="/Employeer/SelProfile?id=@id">个人信息</a></li>
+    <li class=""><a href="/Employeer/UpdProfile?id=@id" id="updEmp" loginer="@loginer.ID" selemid="@id">更新信息</a></li>
+    <li class=""><a href="/Employeer/SelOneCalendar?id=@id">个人日程</a></li>
+
+</ul>
+@RenderBody()
+
+@section navgation
+{
+    @RenderSection("subnavgation")
+}
+

@@ -1,0 +1,243 @@
+﻿@{
+    ViewBag.Title = "MyLists";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "个人中心";
+}
+
+<script>
+
+    $(function () {
+        $(".个人中心").addClass("active").siblings().removeClass("active");
+        $(".我的日程").addClass("active");
+
+        //编辑
+        $(".prewrite").click(function () {
+            //显示弹框
+            //$("#updatediv").show();
+            $("#updatediv").modal("show");
+            //设置弹框
+            var needtop = $(window).height() / 2 - $("#responsive").height() / 2;
+            $("#responsive").css({ top: needtop });
+            //获取单击得到表单的值，赋予弹框
+            $("#schedule").val($(this).parent().parent().find("td").eq(0).find("b").html());//日程
+            $("#actiontime").val($(this).parent().parent().find("td").eq(2).html());//时间
+            //设置id并获取
+            $("#change").attr("needid", $(this).parent().parent().find("td").eq(0).find("b").attr("id"));
+        });
+        //关闭弹框
+        $("#close").click(function () {
+            $("#updatediv").hide();
+        });
+        //更新
+        $("#change").click(function () {
+
+            //获值
+            var parms = {
+                id: $("#change").attr("needid"), schedule: $("#schedule").val(), actiontime: $("#actiontime").val()
+            };
+
+
+            //传值           
+            $.post('/Home/UpdCalendar?method=update', parms, function (rs) {
+
+                if (rs) {
+                    alert("修改成功！");
+                    $("#updatediv").modal("hide");
+                    location.href = "/Home/MyLists";//刷新
+                } else {
+                    alert("修改失败！");
+                    $("#updatediv").modal("hide");
+                }
+            });
+
+        });
+    });
+
+
+</script>
+
+@*弹框开始*************************************************************@
+<div id="updatediv" class="modal-scrollable" style="z-index: 10050; display: none;">
+    <div id="responsive" class="modal hide fade in modal-overflow" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: 0px;">
+
+        <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+            <h3>修改我的日程</h3>
+
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row-fluid">
+
+                <div class="span6">
+
+                    <h4>日程安排</h4>
+
+                    <p>
+                        <textarea role="2" rows="6" id="schedule"></textarea>
+                    </p>
+
+
+
+                </div>
+
+                <div class="span6">
+
+                    <h4>执行时间</h4>
+
+                    <p>
+                        <input type="text" id="actiontime"><b style="color: red;">例：2016-12-09</b>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button type="button" data-dismiss="modal" class="btn" id="close">关闭</button>
+
+            <button type="button" class="btn blue" id="change">更新</button>
+
+        </div>
+
+    </div>
+</div>
+
+@*弹框结束*************************************************************@
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">个人中心</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">我的日程</a>
+        </li>
+
+    </ul>
+
+}
+<h2>我的日程表</h2>
+<div class="span11">
+    
+    <div class="btn-group">
+
+        <a href="/home/addlists" class="btn blue">添加日程 <i class="icon-plus"></i>
+        </a>
+
+    </div>
+    <br />
+    <br />
+    <!-- BEGIN SAMPLE TABLE PORTLET-->
+    <div class="portlet box blue">
+
+        <div class="portlet-title">
+
+            <div class="caption"><i class="icon-calendar"></i>日程表</div>
+
+            <div class="tools">
+
+                <a href="javascript:;" class="collapse"></a>
+
+                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+
+                <a href="javascript:;" class="reload"></a>
+
+                <a href="javascript:;" class="remove"></a>
+
+            </div>
+
+        </div>
+
+        <div class="portlet-body">
+
+            <table class="table table-striped table-bordered table-advance table-hover">
+
+                <thead>
+
+                    <tr>
+                        <th class="hidden-phone"><i class="icon-question-sign"></i>安排</th>
+
+                        <th><i class="icon-shopping-cart"></i>星期</th>
+
+                        <th><i class="icon-bell"></i>时间</th>
+
+                        <th><i class="icon-briefcase"></i>操作</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    @{
+                        List<Model.Calendar> loginCalendars = ViewBag.loginCalendars;                                           
+                    }
+
+                    @{
+                        if (loginCalendars != null)
+                        {
+                            foreach (var item in loginCalendars)
+                            {
+                        <tr>
+                            @{
+                                if (item.Schedule.Length >= 2)
+                                {
+                                    item.Schedule = item.Schedule.Substring(0, 2) + "...";
+                                }
+                            }
+                            <td class="hidden-phone">
+                                <b id="@item.ID">@item.Schedule</b>
+                                <a href="/Home/DetailCalendar?id=@item.ID" class="btn mini blue">查看详情<i class="m-icon-swapright m-icon-white"></i></a>
+                            </td>
+
+                            <td>@item.ScheduleDate</td>
+                            <td>@item.ActionTime</td>
+                            <td>
+                                <a href="#" class="btn mini green prewrite"><i class="icon-edit"></i>编辑</a>
+                                <a href="/Home/DelCalendar?delid=@item.ID" class="btn mini red"><i class="icon-trash"></i>删除</a>
+                            </td>
+
+                        </tr>	
+                            }
+                        }
+                                            
+                    }
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- END SAMPLE TABLE PORTLET-->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

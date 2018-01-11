@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = "TimeManage";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "考勤管理";
+}
+<script>
+
+    $(function () {
+
+        //$("#left_menu > li").eq(10).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(10).find("ul li").eq(0).addClass("active");
+
+        $(".员工考勤管理").addClass("active").siblings().removeClass("active");
+        $(".考勤管理").addClass("active");
+
+        //删除签到记录
+        $(".delts").click(function () {
+            //获取id
+            var id = $(this).attr("getid");
+            //传值
+            $.post('/TimeSheet/DelTimeSheetByID?id='+id, function (rs) {
+                if (rs) {
+                    alert("删除成功！");
+                    location.href = "/TimeSheet/TimeManage";
+                }
+            });
+        });
+    });
+
+</script>
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">考勤管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">考勤管理</a>
+        </li>
+
+    </ul>
+
+}
+
+
+<h2>考勤管理</h2>
+
+@{
+    //接收所有员工信息
+    List<Model.EmployeeInfo> elist = (List<Model.EmployeeInfo>)ViewBag.alluser;
+
+    //查询所有考勤记录
+    List<Model.TimeSheet> tslist = (List<Model.TimeSheet>)ViewBag.allts;
+
+}
+<div class="span11">
+
+    <!-- BEGIN SAMPLE TABLE PORTLET-->
+
+    <div class="portlet box blue">
+
+        <div class="portlet-title">
+
+            <div class="caption"><i class="icon-cogs"></i>考勤列表</div>
+
+            <div class="tools">
+
+                <a href="javascript:;" class="collapse"></a>
+
+                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+
+                <a href="javascript:;" class="reload"></a>
+
+                <a href="javascript:;" class="remove"></a>
+
+            </div>
+
+        </div>
+
+        <div class="portlet-body">
+
+            <table class="table table-hover">
+
+                <thead>
+
+                    <tr style="color:gray;">
+                        <th><i class="icon-user"></i>姓名</th>
+                        <th><i class="icon-check">规定签到时间</i></th>
+                        <th><i class="icon-heart"></i>签到时间</th>
+                        <th><i class="icon-check-empty"></i>规定签退时间</th>
+                        <th><i class="icon-heart-empty"></i>签退时间</th>
+                        <th><i class="icon-lock"></i>签到状态</th>
+                        @*<th><i class="icon-cogs"></i>操作</th>*@
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        foreach (var item in tslist)
+                        {
+                            var name = "";
+                            foreach (var u in elist)
+                            {
+                                if (item.EmployeeID == u.ID)
+                                {
+                                    name = u.LoginName;
+                                }
+                            }
+                        <tr>
+                            <td>@name</td>
+                            <td>@item.OfficeHour</td>
+                            <td>@item.Check_inTime</td>
+                            <td>@item.QuittingTime</td>
+                            <td>@item.SignBackTime</td>
+                            <td><span class="label label-info">@item.Remark</span></td>
+                          @*  <td>
+                                <a href="#" class="btn mini blue delts" getid="@item.ID" ><i class="icon-trash "></i>删除</a>
+                            </td>*@
+                        </tr>
+                        }
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- END SAMPLE TABLE PORTLET-->
+
+</div>

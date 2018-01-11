@@ -1,0 +1,546 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="testModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="testModelStoreContainer">
+          <EntitySet Name="Calendar" EntityType="testModel.Store.Calendar" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Dept" EntityType="testModel.Store.Dept" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Employee_PermissionInfo" EntityType="testModel.Store.Employee_PermissionInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Employee_RoleInfo" EntityType="testModel.Store.Employee_RoleInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EmployeeInfo" EntityType="testModel.Store.EmployeeInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GetEmailMessages" EntityType="testModel.Store.GetEmailMessages" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Payroll" EntityType="testModel.Store.Payroll" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PermissionInfo" EntityType="testModel.Store.PermissionInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PostInfo" EntityType="testModel.Store.PostInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RoleInfo" EntityType="testModel.Store.RoleInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RoleInfo_PermissionInfo" EntityType="testModel.Store.RoleInfo_PermissionInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SalaryRecord" EntityType="testModel.Store.SalaryRecord" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SendEmailMessages" EntityType="testModel.Store.SendEmailMessages" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TimeSheet" EntityType="testModel.Store.TimeSheet" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="Calendar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="int" />
+          <Property Name="Schedule" Type="text" />
+          <Property Name="ScheduleDate" Type="varchar" MaxLength="32" />
+          <Property Name="ActionTime" Type="varchar" MaxLength="32" />
+        </EntityType>
+        <EntityType Name="Dept">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DeptCode" Type="varchar" MaxLength="32" />
+          <Property Name="DeptName" Type="varchar" MaxLength="32" />
+          <Property Name="DeptDuties" Type="text" />
+        </EntityType>
+        <EntityType Name="Employee_PermissionInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="int" />
+          <Property Name="PermissionID" Type="int" />
+        </EntityType>
+        <EntityType Name="Employee_RoleInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="int" />
+          <Property Name="RoleID" Type="int" />
+        </EntityType>
+        <EntityType Name="EmployeeInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="LoginName" Type="varchar" MaxLength="32" />
+          <Property Name="LoginPassword" Type="varchar" MaxLength="32" />
+          <Property Name="EmployeeHead" Type="varchar" MaxLength="128" />
+          <Property Name="Sex" Type="int" />
+          <Property Name="IDNumber" Type="bigint" />
+          <Property Name="BirthDay" Type="varchar" MaxLength="64" />
+          <Property Name="Phone" Type="bigint" />
+          <Property Name="Email" Type="varchar" MaxLength="64" />
+          <Property Name="EmployeeAddress" Type="text" />
+          <Property Name="Degree" Type="varchar" MaxLength="64" />
+          <Property Name="PostID" Type="int" />
+          <Property Name="DeptID" Type="int" />
+          <Property Name="EmployeeProfile" Type="text" />
+          <Property Name="Hiredate" Type="datetime" />
+          <Property Name="Wage" Type="int" />
+        </EntityType>
+        <EntityType Name="GetEmailMessages">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SenderID" Type="int" />
+          <Property Name="HaverID" Type="int" />
+          <Property Name="Title" Type="varchar" MaxLength="32" />
+          <Property Name="Content" Type="text" />
+          <Property Name="SendTime" Type="varchar" MaxLength="64" />
+          <Property Name="IsRead" Type="int" />
+          <Property Name="IsDel" Type="int" />
+        </EntityType>
+        <EntityType Name="Payroll">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BasicWage" Type="int" />
+          <Property Name="LunchAllowance" Type="int" />
+          <Property Name="MeritPay" Type="int" />
+          <Property Name="TrafficAllowance" Type="int" />
+          <Property Name="CommunicationAllowance" Type="int" />
+          <Property Name="EmployeeId" Type="int" />
+        </EntityType>
+        <EntityType Name="PermissionInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PageUrl" Type="varchar" MaxLength="64" />
+          <Property Name="PageIcon" Type="varchar" MaxLength="64" />
+          <Property Name="PageName" Type="varchar" MaxLength="64" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="Remark" Type="text" />
+        </EntityType>
+        <EntityType Name="PostInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="JobTitle" Type="varchar" MaxLength="32" />
+          <Property Name="JobDescription" Type="text" />
+          <Property Name="DeptID" Type="int" />
+        </EntityType>
+        <EntityType Name="RoleInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="varchar" MaxLength="32" />
+        </EntityType>
+        <EntityType Name="RoleInfo_PermissionInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="int" />
+          <Property Name="PermissionID" Type="int" />
+        </EntityType>
+        <EntityType Name="SalaryRecord">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="int" />
+          <Property Name="TotalSalary" Type="int" />
+          <Property Name="PayTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SendEmailMessages">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SenderID" Type="int" />
+          <Property Name="HaverID" Type="int" />
+          <Property Name="Title" Type="varchar" MaxLength="32" />
+          <Property Name="Content" Type="text" />
+          <Property Name="SendTime" Type="varchar" MaxLength="64" />
+          <Property Name="IsSend" Type="int" />
+          <Property Name="IsRead" Type="int" />
+          <Property Name="IsDel" Type="int" />
+        </EntityType>
+        <EntityType Name="TimeSheet">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="int" />
+          <Property Name="OfficeHour" Type="varchar" MaxLength="32" />
+          <Property Name="QuittingTime" Type="varchar" MaxLength="32" />
+          <Property Name="Check_inTime" Type="varchar" MaxLength="32" />
+          <Property Name="SignBackTime" Type="varchar" MaxLength="32" />
+          <Property Name="Check_inType" Type="int" />
+          <Property Name="SignBackType" Type="int" />
+          <Property Name="Remark" Type="varchar" MaxLength="32" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="testModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="testEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Calendar" EntityType="testModel.Calendar" />
+          <EntitySet Name="Dept" EntityType="testModel.Dept" />
+          <EntitySet Name="Employee_PermissionInfo" EntityType="testModel.Employee_PermissionInfo" />
+          <EntitySet Name="Employee_RoleInfo" EntityType="testModel.Employee_RoleInfo" />
+          <EntitySet Name="EmployeeInfo" EntityType="testModel.EmployeeInfo" />
+          <EntitySet Name="GetEmailMessages" EntityType="testModel.GetEmailMessages" />
+          <EntitySet Name="Payroll" EntityType="testModel.Payroll" />
+          <EntitySet Name="PermissionInfo" EntityType="testModel.PermissionInfo" />
+          <EntitySet Name="PostInfo" EntityType="testModel.PostInfo" />
+          <EntitySet Name="RoleInfo" EntityType="testModel.RoleInfo" />
+          <EntitySet Name="RoleInfo_PermissionInfo" EntityType="testModel.RoleInfo_PermissionInfo" />
+          <EntitySet Name="SalaryRecord" EntityType="testModel.SalaryRecord" />
+          <EntitySet Name="SendEmailMessages" EntityType="testModel.SendEmailMessages" />
+          <EntitySet Name="TimeSheet" EntityType="testModel.TimeSheet" />
+        </EntityContainer>
+        <EntityType Name="Calendar">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="Int32" />
+          <Property Name="Schedule" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="ScheduleDate" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="ActionTime" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Dept">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="DeptCode" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="DeptName" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="DeptDuties" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Employee_PermissionInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="PermissionID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Employee_RoleInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="Int32" />
+          <Property Name="RoleID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="EmployeeInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="LoginName" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="LoginPassword" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="EmployeeHead" Type="String" MaxLength="128" Unicode="false" FixedLength="false" />
+          <Property Name="Sex" Type="Int32" />
+          <Property Name="IDNumber" Type="Int64" />
+          <Property Name="BirthDay" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+          <Property Name="Phone" Type="Int64" />
+          <Property Name="Email" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+          <Property Name="EmployeeAddress" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Degree" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+          <Property Name="PostID" Type="Int32" />
+          <Property Name="DeptID" Type="Int32" />
+          <Property Name="EmployeeProfile" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Hiredate" Type="DateTime" Precision="3" />
+          <Property Name="Wage" Type="Int32" />
+        </EntityType>
+        <EntityType Name="GetEmailMessages">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="SenderID" Type="Int32" />
+          <Property Name="HaverID" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="Content" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="SendTime" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+          <Property Name="IsRead" Type="Int32" />
+          <Property Name="IsDel" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Payroll">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="BasicWage" Type="Int32" />
+          <Property Name="LunchAllowance" Type="Int32" />
+          <Property Name="MeritPay" Type="Int32" />
+          <Property Name="TrafficAllowance" Type="Int32" />
+          <Property Name="CommunicationAllowance" Type="Int32" />
+          <Property Name="EmployeeId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="PermissionInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="PageUrl" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+          <Property Name="PageIcon" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+          <Property Name="PageName" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="PostInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="JobTitle" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="JobDescription" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="DeptID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="RoleInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="RoleInfo_PermissionInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="Int32" />
+          <Property Name="PermissionID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SalaryRecord">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="TotalSalary" Type="Int32" />
+          <Property Name="PayTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SendEmailMessages">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="SenderID" Type="Int32" />
+          <Property Name="HaverID" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="Content" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="SendTime" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+          <Property Name="IsSend" Type="Int32" />
+          <Property Name="IsRead" Type="Int32" />
+          <Property Name="IsDel" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TimeSheet">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeID" Type="Int32" />
+          <Property Name="OfficeHour" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="QuittingTime" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="Check_inTime" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="SignBackTime" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+          <Property Name="Check_inType" Type="Int32" />
+          <Property Name="SignBackType" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="testModelStoreContainer" CdmEntityContainer="testEntities">
+          <EntitySetMapping Name="Calendar">
+            <EntityTypeMapping TypeName="testModel.Calendar">
+              <MappingFragment StoreEntitySet="Calendar">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="Schedule" ColumnName="Schedule" />
+                <ScalarProperty Name="ScheduleDate" ColumnName="ScheduleDate" />
+                <ScalarProperty Name="ActionTime" ColumnName="ActionTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dept">
+            <EntityTypeMapping TypeName="testModel.Dept">
+              <MappingFragment StoreEntitySet="Dept">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+                <ScalarProperty Name="DeptDuties" ColumnName="DeptDuties" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee_PermissionInfo">
+            <EntityTypeMapping TypeName="testModel.Employee_PermissionInfo">
+              <MappingFragment StoreEntitySet="Employee_PermissionInfo">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee_RoleInfo">
+            <EntityTypeMapping TypeName="testModel.Employee_RoleInfo">
+              <MappingFragment StoreEntitySet="Employee_RoleInfo">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeInfo">
+            <EntityTypeMapping TypeName="testModel.EmployeeInfo">
+              <MappingFragment StoreEntitySet="EmployeeInfo">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
+                <ScalarProperty Name="EmployeeHead" ColumnName="EmployeeHead" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
+                <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmployeeAddress" ColumnName="EmployeeAddress" />
+                <ScalarProperty Name="Degree" ColumnName="Degree" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="EmployeeProfile" ColumnName="EmployeeProfile" />
+                <ScalarProperty Name="Hiredate" ColumnName="Hiredate" />
+                <ScalarProperty Name="Wage" ColumnName="Wage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GetEmailMessages">
+            <EntityTypeMapping TypeName="testModel.GetEmailMessages">
+              <MappingFragment StoreEntitySet="GetEmailMessages">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+                <ScalarProperty Name="HaverID" ColumnName="HaverID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="SendTime" ColumnName="SendTime" />
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payroll">
+            <EntityTypeMapping TypeName="testModel.Payroll">
+              <MappingFragment StoreEntitySet="Payroll">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="BasicWage" ColumnName="BasicWage" />
+                <ScalarProperty Name="LunchAllowance" ColumnName="LunchAllowance" />
+                <ScalarProperty Name="MeritPay" ColumnName="MeritPay" />
+                <ScalarProperty Name="TrafficAllowance" ColumnName="TrafficAllowance" />
+                <ScalarProperty Name="CommunicationAllowance" ColumnName="CommunicationAllowance" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PermissionInfo">
+            <EntityTypeMapping TypeName="testModel.PermissionInfo">
+              <MappingFragment StoreEntitySet="PermissionInfo">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PageUrl" ColumnName="PageUrl" />
+                <ScalarProperty Name="PageIcon" ColumnName="PageIcon" />
+                <ScalarProperty Name="PageName" ColumnName="PageName" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostInfo">
+            <EntityTypeMapping TypeName="testModel.PostInfo">
+              <MappingFragment StoreEntitySet="PostInfo">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="JobDescription" ColumnName="JobDescription" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleInfo">
+            <EntityTypeMapping TypeName="testModel.RoleInfo">
+              <MappingFragment StoreEntitySet="RoleInfo">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleInfo_PermissionInfo">
+            <EntityTypeMapping TypeName="testModel.RoleInfo_PermissionInfo">
+              <MappingFragment StoreEntitySet="RoleInfo_PermissionInfo">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalaryRecord">
+            <EntityTypeMapping TypeName="testModel.SalaryRecord">
+              <MappingFragment StoreEntitySet="SalaryRecord">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="TotalSalary" ColumnName="TotalSalary" />
+                <ScalarProperty Name="PayTime" ColumnName="PayTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SendEmailMessages">
+            <EntityTypeMapping TypeName="testModel.SendEmailMessages">
+              <MappingFragment StoreEntitySet="SendEmailMessages">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+                <ScalarProperty Name="HaverID" ColumnName="HaverID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="SendTime" ColumnName="SendTime" />
+                <ScalarProperty Name="IsSend" ColumnName="IsSend" />
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeSheet">
+            <EntityTypeMapping TypeName="testModel.TimeSheet">
+              <MappingFragment StoreEntitySet="TimeSheet">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="OfficeHour" ColumnName="OfficeHour" />
+                <ScalarProperty Name="QuittingTime" ColumnName="QuittingTime" />
+                <ScalarProperty Name="Check_inTime" ColumnName="Check_inTime" />
+                <ScalarProperty Name="SignBackTime" ColumnName="SignBackTime" />
+                <ScalarProperty Name="Check_inType" ColumnName="Check_inType" />
+                <ScalarProperty Name="SignBackType" ColumnName="SignBackType" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

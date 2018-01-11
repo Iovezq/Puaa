@@ -1,0 +1,616 @@
+﻿@{
+    ViewBag.Title = "Main";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+}
+
+
+<script type="text/ecmascript">
+    function Gettime() {
+
+        var time = new Date();
+        var y = time.getFullYear();
+        var m = time.getMonth() + 1;
+        var d = time.getDate();
+        var h = time.getHours();
+        var i = time.getMinutes();
+        var s = time.getSeconds();
+        if (m < 10)
+            m = "0" + m;
+        if (d < 10)
+            d = "0" + d;
+        if (h < 10)
+            h = "0" + h;
+        if (i < 10)
+            i = "0" + i;
+        if (s < 10)
+            s = "0" + s;
+
+        var nowtime = y + "-" + m + "-" + d + " " + h + ":" + i + ":" + s;
+        document.getElementById("showtime").innerHTML = nowtime;
+        setTimeout(Gettime, 1000);
+    }
+
+   
+
+    </script>
+
+@*<script>
+
+    $(function () {
+
+
+        $("#my_go").click(function () {
+
+
+            $.post("/Attendance/Re_AddAttendance", function (result) {
+
+                if (result == 0) {
+
+                    alert("签到失败");
+                }
+                else if (result == 1) {
+
+
+                    alert("签到成功");
+                }
+                else {
+
+                    alert("今天您已经签到过了");
+
+                }
+            });
+
+        });
+
+        $("#my_leave").click(function () {
+
+            $.post("/Attendance/Re_AttenceLeave", function (result) {
+
+                if (result == 2) {
+
+                    alert("您已经签退了或还未签到！");
+                }
+                if (result == 1) {
+                    alert("签退成功");
+                }
+
+            });
+
+        });
+    });
+</script>*@
+
+<div class="container-fluid"  >
+
+    <!-- BEGIN PAGE HEADER-->
+
+    <div class="row-fluid">
+
+        <div class="span12">
+
+            <!-- BEGIN STYLE CUSTOMIZER -->
+
+            <div class="color-panel hidden-phone">
+
+                <div class="color-mode-icons icon-color"></div>
+
+                <div class="color-mode-icons icon-color-close"></div>
+
+                <div class="color-mode">
+
+                    <p>THEME COLOR</p>
+
+                    <ul class="inline">
+
+                        <li class="color-black current color-default" data-style="default"></li>
+
+                        <li class="color-blue" data-style="blue"></li>
+
+                        <li class="color-brown" data-style="brown"></li>
+
+                        <li class="color-purple" data-style="purple"></li>
+
+                        <li class="color-grey" data-style="grey"></li>
+
+                        <li class="color-white color-light" data-style="light"></li>
+
+                    </ul>
+
+                    <label>
+
+                        <span>Layout</span>
+
+                        <select class="layout-option m-wrap small">
+
+                            <option value="fluid" selected="">Fluid</option>
+
+                            <option value="boxed">Boxed</option>
+
+                        </select>
+
+                    </label>
+
+                    <label>
+
+                        <span>Header</span>
+
+                        <select class="header-option m-wrap small">
+
+                            <option value="fixed" selected="">Fixed</option>
+
+                            <option value="default">Default</option>
+
+                        </select>
+
+                    </label>
+
+                    <label>
+
+                        <span>Sidebar</span>
+
+                        <select class="sidebar-option m-wrap small">
+
+                            <option value="fixed">Fixed</option>
+
+                            <option value="default" selected="">Default</option>
+
+                        </select>
+
+                    </label>
+
+                    <label>
+
+                        <span>Footer</span>
+
+                        <select class="footer-option m-wrap small">
+
+                            <option value="fixed">Fixed</option>
+
+                            <option value="default" selected="">Default</option>
+
+                        </select>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+            <!-- END BEGIN STYLE CUSTOMIZER -->
+
+            <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+
+
+
+            <!-- END PAGE TITLE & BREADCRUMB-->
+
+        </div>
+
+    </div>
+
+    <!-- END PAGE HEADER-->
+
+    <!-- BEGIN PAGE CONTENT-->
+
+    <div class="tiles">
+        <a href="/TimeSheet/CheckOrSignBack">
+            <div class="tile double-down bg-blue">
+
+                <div class="tile-body">
+
+                    <i class="icon-bell"></i>
+
+                </div>
+
+                <div class="tile-object">
+
+                    <div>
+
+                        <a id="my_go" class="span4" style="">
+
+                            <div><i class="icon-heart-empty"></i>签到</div>
+                            <span class="badge badge-info"></span>
+                        </a>
+
+                        &nbsp;  &nbsp;  &nbsp;  &nbsp; 
+                        <a id="my_leave" class="span4">
+
+                            <div><i class="icon-heart-empty"></i>签退</div>
+                            <span class="badge badge-info"></span>
+                        </a>
+                    </div>
+                    <div class="name">
+                    </div>
+
+                    <div class="number">
+                        6
+
+                    </div>
+
+                </div>
+
+            </div>
+        </a>
+        <a href="/home/mylists">
+        <div class="tile bg-green">
+
+            <div class="tile-body">
+
+                <i class="icon-calendar"></i>
+
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+                    我的日程
+
+                </div>
+
+                <div class="number">
+                    12
+
+                </div>
+
+            </div>
+
+        </div>
+      </a>
+        <a href="/Email/EmailManage">
+        <div class="tile double selected bg-blue">
+
+            <div class="corner"></div>
+
+            <div class="check"></div>
+
+            <div class="tile-body">
+
+                <h4 style="text-align: center; margin-top: 50px">我的收件箱</h4>
+
+                <p></p>
+
+                <p></p>
+
+            </div>
+            </div>
+
+            <div class="tile-object">
+
+                
+
+            </div>
+   </a>
+      
+ 
+    <a href="/employeer/employeerlist">
+        <div class="tile selected bg-red">
+
+            <div class="corner"></div>
+
+            <div class="tile-body">
+
+                <i class="icon-user"></i>
+
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+                    通讯录
+
+                </div>
+
+                <div class="number">
+                    452
+
+                </div>
+
+            </div>
+
+        </div>
+        </a>
+        <div class="tile double bg-purple">
+
+            <div class="tile-body">
+
+                <img src="~/media/image/photo1.jpg" alt="">
+
+                <h3>Announements</h3>
+
+                <p>
+                    Easily style icon color, size, shadow, and anything that's possible with CSS.
+
+                </p>
+
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+                    Bob Nilson
+
+                </div>
+
+                <div class="number">
+                    24 Jan 2013
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="tile bg-yellow">
+
+            <div class="tile-body">
+
+                <i class="icon-shopping-cart"></i>
+
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+                    薪资管理
+
+                </div>
+
+                <div class="number">
+                    121
+
+                </div>
+
+            </div>
+
+        </div>
+          <div class="tile double bg-red">
+
+            <div class="tile-body">
+
+              
+                    <i class="icon-time"></i>
+                <h3><span id="showtime" style="font:bolder"></span></h3>
+
+          
+
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+
+            
+
+                </div>
+
+                <div class="number">
+                  
+                  
+                </div>
+
+            </div>
+
+        </div>
+    <a href="#">
+        <div class="tile image selected">
+
+            <div class="tile-body">
+
+                <img src="~/media/image/4.jpg" />
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+                    study 
+
+                </div>
+
+            </div>
+
+        </div>
+</a>
+    <a  href="/email/emailmanage">
+        <div class="tile bg-green">
+
+            <div class="tile-body">
+
+                <i class="icon-comments-alt"></i>
+
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+                    未读邮件
+
+                </div>
+
+                <div class="number">
+                    12
+
+                </div>
+
+            </div>
+
+        </div>
+</a>
+      
+
+        <div class="tile bg-blue">
+
+            <div class="tile-body">
+
+                <i class="icon-coffee"></i>
+
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+                    Meetups
+
+                </div>
+
+                <div class="number">
+                    12 Jan
+
+                </div>
+
+            </div>
+
+        </div>
+    <a href="/TimeSheet/TimeManage">
+        <div class="tile bg-green">
+
+            <div class="tile-body">
+
+                <i class="icon-bar-chart"></i>
+
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+                    查看考勤
+
+                </div>
+
+                <div class="number">
+                </div>
+
+            </div>
+
+        </div>
+</a>
+        <div class="tile bg-purple">
+
+            <div class="tile-body">
+
+                <i class="icon-briefcase"></i>
+
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+                    岗位调动 
+
+                </div>
+
+                <div class="number">
+                    124
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="tile image double selected">
+
+            <div class="tile-body">
+
+                <img src="~/media/image/image4.jpg" alt="">
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+                    Gallery
+
+                </div>
+
+                <div class="number">
+                    124
+
+                </div>
+
+            </div>
+
+        </div>
+    <a href="/permission/permissionmanage">
+        <div class="tile bg-yellow selected">
+
+            <div class="corner"></div>
+
+            <div class="check"></div>
+
+            <div class="tile-body">
+
+                <i class="icon-cogs"></i>
+
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+                    权限
+
+                </div>
+
+            </div>
+
+        </div>
+</a>
+        <div class="tile bg-purple">
+
+            <div class="tile-body">
+
+                <i class="icon-plane"></i>
+
+            </div>
+
+            <div class="tile-object">
+
+                <div class="name">
+                    Projects
+
+                </div>
+
+                <div class="number">
+                    34
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <!-- END PAGE CONTENT-->
+
+</div>
+
+
+
+@section navgation{
+
+
+    <ul class="breadcrumb">
+
+        <li>
+
+            <i class="icon-home"></i>
+
+            <a href="index.html">主页</a>
+
+            <i class="icon-angle-right"></i>
+
+        </li>
+
+        <li>
+
+            <a href="#">我的主页</a>
+
+
+
+        </li>
+
+    </ul>
+
+
+}

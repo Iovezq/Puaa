@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "邮件管理";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+}
+
+<script>
+
+    $(function () {
+
+        //$("#left_menu > li").eq(8).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(8).find("ul li").eq(0).addClass("active");
+
+        $(".信息交流管理").addClass("active").siblings().removeClass("active");
+        $(".邮件管理").addClass("active");
+
+    });
+
+</script>
+
+@{
+    
+    }
+
+<ul class="nav nav-tabs" id="childmenu">
+    <li class=""><a href="/Email/EmailManage">收件箱（
+        @{
+            var num1 = "";
+            if (Session["HaveNum"] != null)
+            {
+                num1 = Session["HaveNum"].ToString();
+            }
+            else
+            {
+                num1 = "0";
+            }
+        }
+        @num1
+        ）</a></li>
+    <li class=""><a href="/Email/SendEmail">发件箱</a></li>
+    <li class=""><a href="/Email/SendedEmail?Title=普通信息" id="sended">已发送（
+        @{
+            var num2 = "";
+            if (Session["SendedNum"] != null)
+            {
+                num2 = Session["SendedNum"].ToString();
+            }
+            else
+            {
+                num2 = "0";
+            }
+        }
+        @num2
+        ）</a></li>
+    <li class=""><a href="/Email/DeletedEmail">已删除《收件箱》（
+         @{
+            var num3 = "";
+            if (Session["DeletedNum"] != null)
+            {
+                num3 = Session["DeletedNum"].ToString();
+            }
+            else
+            {
+                num3 = "0";
+            }
+        }
+        @num3
+        ）</a></li>
+    <li class=""><a href="/Email/ReadEmail">已读《收件箱》（
+         @{
+            var num4 = "";
+            if (Session["ReadNum"] != null)
+            {
+                num4 = Session["ReadNum"].ToString();
+            }
+            else
+            {
+                num4 = "0";
+            }
+        }
+        @num4
+        ）</a></li>
+    <li class=""><a href="/Email/WritedEmail">草稿箱（
+        @{
+            var num5 = "";
+            if (Session["WritedNum"] != null)
+            {
+                num5 = Session["WritedNum"].ToString();
+            }
+            else
+            {
+                num5 = "0";
+            }
+        }
+        @num5
+        ）</a></li>
+</ul>
+@RenderBody()
+
+@section navgation
+{
+    @RenderSection("subnavgation")
+}

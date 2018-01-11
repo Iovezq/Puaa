@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "AddPay";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "薪酬管理";
+}
+<script>
+
+    $(function () {
+
+        $(".薪酬管理").addClass("active").siblings().removeClass("active");
+        $(".查询工资").addClass("active");
+
+
+        $(".add").click(function () {
+            var parms = { BasicWage: $("#BasicWage").val(), LunchAllowance: $("#LunchAllowance").val(), MeritPay: $("#MeritPay").val(), TrafficAllowance: $("#TrafficAllowance").val(), CommunicationAllowance: $("#CommunicationAllowance").val(), EmployeeId: $("#EmployeeId").val() };
+
+            $.post('/Payroll/AddPay', parms, function (rs) {
+                if (rs=="0") {
+                    alert("添加成功！")
+                } else if (rs == "1") {
+                    alert("该员工的工资已经分配！")
+                }
+            });
+        });
+        
+
+
+
+    });
+
+</script>
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">薪酬管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+         <li>
+            <a href="/Payroll/Paylist">查询工资</a>
+             <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">新增工资</a>
+        </li>
+
+    </ul>
+
+}
+@{
+    
+    //查询所有员工
+    List<Model.EmployeeInfo> emlist = (List<Model.EmployeeInfo>)ViewBag.allem;
+}
+
+<h2>新增工资</h2>
+
+
+<div class="span11">
+
+    <div class="portlet box red ">
+
+        <div class="portlet-title">
+
+            <div class="caption"><i class="icon-reorder"></i>新增工资</div>
+
+            <div class="tools">
+
+                <a href="javascript:;" class="collapse"></a>
+
+                <a href="javascript:;" class="reload"></a>
+
+            </div>
+
+        </div>
+
+        <div class="portlet-body form">
+
+            <!-- BEGIN FORM-->
+
+            <form action="#" class="form-horizontal" method="post">
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="help-block">基本工资：</span>
+                        <input class="span6 m-wrap" type="text" maxlength="15" size="15" id="BasicWage" value="4000">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                         <span class="help-block">午餐补助：</span>
+                        <input class="span6 m-wrap" type="text" maxlength="15" size="15" id="LunchAllowance" value="200"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="help-block">绩效工资：</span>
+                        <input class="span6 m-wrap" type="text" maxlength="15" size="15" id="MeritPay" value="300" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="help-block">交通补助：</span>
+                        <input class="span6 m-wrap" type="text" maxlength="15" size="15"  id="TrafficAllowance" value="100"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <span class="help-block">通讯补助：</span>
+                        <input class="span6 m-wrap" type="text" maxlength="15" size="15"  id="CommunicationAllowance" value="100"/>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <span class="help-block">请选择员工：</span>
+                    <select class="span6 m-wrap" id="EmployeeId">
+                        <option value="" >选择...</option>
+                        @{
+                            foreach (var item in emlist)
+                            {
+                                   
+                            <option value="@item.ID" >@item.LoginName</option>
+                                    
+                               
+                            }
+                        }
+                    </select>
+
+                </div>
+                <div class="controls">
+                    <a class="btn red add">添加<i class="icon-plus"></i></a>
+                </div>
+            </form>
+
+            <!-- END FORM-->
+
+        </div>
+
+    </div>
+
+</div>

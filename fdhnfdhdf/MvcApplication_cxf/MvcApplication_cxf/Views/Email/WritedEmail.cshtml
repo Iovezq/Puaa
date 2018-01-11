@@ -1,0 +1,329 @@
+﻿@{
+    ViewBag.Title = "WritedEmail";
+    Layout = "~/Views/Email/_EmailLayoutPage1.cshtml";
+    ViewBag.subTitle = "信息交流管理";
+}
+<script>
+
+    $(function () {
+        //菜单栏样式
+        //$("#left_menu > li").eq(8).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(8).find("ul li").eq(0).addClass("active").siblings().removeClass("active");
+
+        $(".信息交流管理").addClass("active").siblings().removeClass("active");
+        $(".邮件管理").addClass("active");
+        //单击收件箱时为它添加样式
+        $("#childmenu >li").eq(5).addClass("active").siblings().removeClass("active");
+
+
+
+        //查询邮件内容
+        $(".selemail").click(function () {
+            //显示弹框
+            //$("#updatediv").show();
+            $("#updatediv").modal("show");
+            //设置弹框
+            var needtop = $(window).height() / 2 - $("#responsive").height() / 2;
+            $("#responsive").css({ top: needtop });
+
+            $("#emailcontent").html($(this).attr("getcontent"));
+
+        });
+        //关闭弹框
+        $("#close").click(function () {
+            $("#updatediv").hide();
+        });
+
+
+        //发送草稿箱中的邮件
+        $(".send").click(function () {
+            var id = $(this).parent().parent().find("td").eq(0).attr("getemeilid");
+            var SenderID = $(this).parent().parent().find("td").eq(3).attr("getsendid");
+            var HaverID = $(this).parent().parent().find("td").eq(4).attr("gethaveid");
+            var Title = $(this).parent().parent().find("td").eq(0).html();
+            var Content = $(this).parent().parent().find("td").eq(1).find("a").attr("getcontent");
+            var SendTime = $(this).parent().parent().find("td").eq(2).html();
+
+            var parms = { id: id, SenderID: SenderID, HaverID: HaverID, Title: Title, Content: Content, SendTime: SendTime };
+            $.post('/Email/DealWritedAdd', parms, function (rs) {
+                if (rs) {
+                    alert("发送成功！");
+                    $(".changesendbtn").html("已发送");
+                    location.href = "/Email/WritedEmail";
+                }
+            });
+        });
+
+    });
+
+</script>
+
+@section subnavgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">信息交流管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">草稿箱</a>
+        </li>
+
+    </ul>
+
+}
+
+@{
+   
+    List<Model.SendEmailMessages> addsend = (List<Model.SendEmailMessages>)ViewBag.addsend;
+}
+
+
+<div class="span10">
+
+    <!--BEGIN TABS-->
+    <div class="tabbable tabbable-custom tabs-left">
+        <!-- Only required for left/right tabs -->
+        <ul class="nav nav-tabs tabs-left">
+            <li class="active"><a href="#tab_3_1" data-toggle="tab">普通信息</a></li>
+            <li class=""><a href="#tab_3_2" data-toggle="tab">请假信息</a></li>
+            <li class=""><a href="#tab_3_3" data-toggle="tab">工作信息</a></li>
+        </ul>
+
+        <div class="tab-content">
+            @* 普通信息 *@
+            <div class="tab-pane active" id="tab_3_1">
+                <div class="portlet-body">
+                    <table class="table table-striped table-bordered table-advance table-hover">
+                        <thead>
+                            <tr>
+                                <th>标题</th>
+                                <th>内容</th>
+                                <th>时间</th>
+                                <th>发件人</th>
+                                <th>收件人</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (addsend != null)
+                                {
+
+                                    foreach (var item in addsend)
+                                    {
+                                        if (item.Title == "闲聊")
+                                        {
+                                <tr>
+                                    <td getemeilid="@item.ID">@item.Title</td>
+                                    <td><a href="#" class="selemail" getcontent="@item.Content">
+                                        @{
+                                            var mes = "";
+                                            if (item.Content.Length > 6)
+                                            {
+                                                mes = item.Content.Substring(0, 6);
+                                            }
+                                            else
+                                            {
+                                                mes = item.Content;
+                                            }
+                                        }
+                                        @mes
+                                    </a></td>
+
+                                    <td>@item.SendTime</td>
+                                    <td getsendid="@item.SenderID"><a href="#" class="label label-info"><i class="icon-user"></i>@ViewBag.SendName</a></td>
+
+                                    <td gethaveid="@item.HaverID"><a href="#" class="label label-success"><i class="icon-user"></i>
+                                        @{
+                                            Dal.EmployeeDal dal = new Dal.EmployeeDal();
+                                            Model.EmployeeInfo em = dal.GetEmployeerByID(item.HaverID);
+                                        }
+                                        @em.LoginName</a></td>
+                                    <td>
+                                        <a href="#" class="btn mini gray send"><i class="icon-share"></i>发送</a>
+                                        <a href="/Email/ExeDelEmailOnWrited?id=@item.ID" class="btn mini black"><i class="icon-trash"></i>删除</a></td>
+                                </tr>  
+                                        }
+
+
+                                    }
+                                }
+                                
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @* 请假信息 *@
+            <div class="tab-pane" id="tab_3_2">
+                <div class="portlet-body">
+                    <table class="table table-striped table-bordered table-advance table-hover">
+                        <thead>
+                            <tr>
+                                <th>标题</th>
+                                <th>内容</th>
+                                <th>时间</th>
+                                <th>发件人</th>
+                                <th>收件人</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (addsend != null)
+                                {
+
+                                    foreach (var item in addsend)
+                                    {
+                                        if (item.Title == "请假")
+                                        {
+                                <tr>
+                                    <td getemeilid="@item.ID">@item.Title</td>
+                                    <td><a href="#" class="selemail" getcontent="@item.Content">
+                                        @{
+                                            var mes = "";
+                                            if (item.Content.Length > 6)
+                                            {
+                                                mes = item.Content.Substring(0, 6);
+                                            }
+                                            else
+                                            {
+                                                mes = item.Content;
+                                            }
+                                        }
+                                        @mes
+                                    </a></td>
+
+                                    <td>@item.SendTime</td>
+
+                                    <td getsendid="@item.SenderID"><a href="#" class="label label-info"><i class="icon-user"></i>@ViewBag.SendName</a></td>
+
+                                    <td gethaveid="@item.HaverID"><a href="#" class="label label-success"><i class="icon-user"></i>
+                                        @{
+                                            Dal.EmployeeDal dal = new Dal.EmployeeDal();
+                                            Model.EmployeeInfo em = dal.GetEmployeerByID(item.HaverID);
+                                        }
+                                        @em.LoginName</a></td>
+
+                                    <td>
+                                        <a href="#" class="btn mini gray send"><i class="icon-share"></i><b class="changesendbtn">发送
+                                        </b></a>
+                                        <a href="/Email/ExeDelEmailOnWrited?id=@item.ID" class="btn mini black"><i class="icon-trash"></i>删除</a></td>
+                                </tr>   
+                                        }
+
+
+                                    }
+                                }
+                               
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @* 工作信息 *@
+            <div class="tab-pane" id="tab_3_3" style="min-height: 124px;">
+                <div class="portlet-body">
+                    <table class="table table-striped table-bordered table-advance table-hover">
+                        <thead>
+                            <tr>
+                                <th>标题</th>
+                                <th>内容</th>
+                                <th>时间</th>
+                                <th>发件人</th>
+                                <th>收件人</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (addsend != null)
+                                {
+
+                                    foreach (var item in addsend)
+                                    {
+                                        if (item.Title == "工作任务")
+                                        {
+                                <tr>
+                                    <td getemeilid="@item.ID">@item.Title</td>
+                                    <td><a href="#" class="selemail" getcontent="@item.Content">
+                                        @{
+                                            var mes = "";
+                                            if (item.Content.Length > 6)
+                                            {
+                                                mes = item.Content.Substring(0, 6);
+                                            }
+                                            else
+                                            {
+                                                mes = item.Content;
+                                            }
+                                        }
+                                        @mes
+                                    </a></td>
+
+                                    <td>@item.SendTime</td>
+                                    <td getsendid="@item.SenderID"><a href="#" class="label label-info"><i class="icon-user"></i>@ViewBag.SendName</a></td>
+
+                                    <td gethaveid="@item.HaverID"><a href="#" class="label label-success"><i class="icon-user"></i>
+                                        @{
+                                            Dal.EmployeeDal dal = new Dal.EmployeeDal();
+                                            Model.EmployeeInfo em = dal.GetEmployeerByID(item.HaverID);
+                                        }
+                                        @em.LoginName</a></td>
+
+                                    <td>
+                                        <a href="#" class="btn mini gray send"><i class="icon-share"></i>发送</a>
+                                        <a href="/Email/ExeDelEmailOnWrited?id=@item.ID" class="btn mini black"><i class="icon-trash"></i>删除</a></td>
+                                </tr>  
+                                        }
+
+                                    }
+                                }
+                               
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--END TABS-->
+
+</div>
+
+
+
+
+
+
+
+@*弹框开始*************************************************************@
+<div id="updatediv" class="modal-scrollable" style="z-index: 10050; display: none;">
+    <div id="responsive" class="modal hide fade in modal-overflow" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: 0px;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3>详情</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row-fluid">
+                <div class="span6">
+                    <h4>内容信息</h4>
+                    <p>
+                        <textarea role="2" rows="6" id="emailcontent" style="margin: 0px 0px 10px; width: 689px; height: 142px;"></textarea>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn" id="close">关闭</button>
+        </div>
+
+    </div>
+</div>
+
+@*弹框结束*************************************************************@

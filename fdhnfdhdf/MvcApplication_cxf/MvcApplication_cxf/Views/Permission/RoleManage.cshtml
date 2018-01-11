@@ -1,0 +1,350 @@
+﻿@{
+    ViewBag.Title = "RoleManage";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "权限管理";
+}
+<script src="~/media/js/jquery-1.9.1.min.js"></script>
+
+<script>
+
+    $(function () {
+
+        //$("#left_menu > li").eq(9).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(9).find("ul li").eq(1).addClass("active");
+
+        $(".员工权限管理").addClass("active").siblings().removeClass("active");
+        $(".角色管理").addClass("active");
+
+        //下拉列表框的改变事件--改变单选框的选中效果
+
+        $("#HaverID").change(function () {
+
+
+            //根据员工Id查找角色Id
+            var rodid = 0;
+
+            //传值到后台
+
+            $.ajax({
+
+                url: "/Permission/GetPerId?Id=" + $("#HaverID").val(),//后台地址并传值
+                async: false,             //同步访问
+                success: function (result) { /// 访问成功后返回
+
+                    if (result != null) {//判断返回值是否为空
+
+                        rodid = result;//赋值
+                    }
+                }
+
+            });
+
+            //循环遍历所有的单选按钮
+           
+            $(".controls").find("label span").find("input[type='radio']").each(function (index, item) {
+
+                //清除所有的单选框的选中效果
+                $(item).parent().removeClass("checked");
+
+                //判断单选按钮的值是否匹配
+                
+                if ($(item).val() == rodid) {
+                  
+                    //选中该单选框  添加样式
+                    $(item).parent().prop("checked", true);
+
+                    $(item).parent().addClass("checked");
+                }
+
+            });
+        });
+
+
+        //授权
+        $(".giveuerrole").click(function () {
+
+            //找到选中的单选框
+            var num = "";
+            $(".controls").find("label span").find("input[type='radio']").each(function (index, item) {
+                if ($(item).is(":checked")) {
+                    //获得权限id
+                    num = $(item).val();
+                }
+            });
+            //获取下拉列表框中的数据
+            $.get('/Permission/ExeAddEmployeerRole', { id: $("#HaverID").val(), num: num }, function (rs) {
+                if (rs) {
+                    alert("授权角色成功！");
+                }
+            });
+        });
+
+        //删除角色
+        $(".delrole").click(function () {
+
+            //找到选中的单选框
+            var num = "";
+            $(".controls").find("label span").find("input[type='radio']").each(function (index, item) {
+                if ($(item).is(":checked")) {
+                    //获得权限id
+                    num = $(item).val();
+                }
+            });
+
+            $.get('/Permission/rolemanage', { id: $("#HaverID").val(), num: num }, function (rs) {
+                if (rs == "1") {
+                    alert("删除成功！");
+                    location.href = "/Permission/rolemanage";
+                } else if (rs == "0") {
+                    alert("有员工拥有此角色！");
+                }
+            });
+        });
+
+
+
+
+        //关闭弹框
+        $("#close").click(function () {
+            $("#updatediv").hide();
+        });
+
+        //显示弹框
+        $(".updrolepers").click(function () {
+            window.location.href = "/Permission/RoleManage?RoleID=" + $(this).attr("getid") + "&RoleName=" + $(this).attr("getrolename");
+        });
+
+        //更新角色权限
+        $("#change").click(function () {
+
+            //找到所有选中的单选框
+            var nums = "";
+            $(".modal-body").find("ul li").find("input[type='checkbox']").each(function (index, item) {
+                if ($(item).is(":checked")) {
+                    //获得权限id
+                    nums += $(item).val() + ",";
+                }
+            });
+            //获得角色id
+
+            $.get('/Permission/ExeAddRolePers', { id: $("#rolename").attr("roleid"), nums: nums }, function (rs) {
+                if (rs == "0") {
+                    alert("角色权限分配成功！");
+                    location.href = "/permission/rolemanage";//刷新
+                }
+            });
+        });
+
+
+
+        //全选
+        $(".ckbt").click(function () {
+
+            if ($(this).is(":checked")) {
+                $(this).parent().parent().parent().parent().find("li").each(function (index, item) {
+                    $(item).find("div span").addClass("checked");
+                    $(item).find("div span input").attr("checked", "checked");
+                });
+
+            } else {
+                $(this).parent().parent().parent().parent().find("li").each(function (index, item) {
+                    $(item).find("div span").removeClass("checked");
+                    $(item).find("div span input").filter(":checkbox").removeAttr("checked");
+                });
+            }
+        });
+
+
+
+
+
+
+
+
+
+    });
+
+
+</script>
+
+<style>
+    li {
+        list-style-type: none;
+    }
+</style>
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">权限管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">角色管理</a>
+        </li>
+
+    </ul>
+
+}
+
+
+
+<h4 class="btn disabled">角色管理</h4>
+
+<div class="btn-group" style="float: right;">
+    <a href="/Permission/AddRole" class="btn red">添加角色<i class="icon-plus"></i>
+    </a>
+</div>
+
+
+@{
+    //查询所有员工
+    List<Model.EmployeeInfo> emlist = (List<Model.EmployeeInfo>)ViewBag.emlist;
+    //查询所有角色
+    List<Model.RoleInfo> roles = (List<Model.RoleInfo>)ViewBag.roles;
+
+    //查询所有权限（查询菜单栏）
+    List<Model.PermissionInfo> perslist = (List<Model.PermissionInfo>)ViewBag.perslist;
+
+    //查询角色权限
+    List<Model.RoleInfo_PermissionInfo> persByRoID = (List<Model.RoleInfo_PermissionInfo>)ViewBag.persByRoID;
+    //查询角色没有的权限
+    List<Model.PermissionInfo> NotPerByRoId = (List<Model.PermissionInfo>)ViewBag.NotPerByRoId;
+}
+<div class="control-group">
+    <div class="controls">
+        <span class="help-block">请选择
+            <label class="control-label"><a class="badge badge-important">被授权人</a><span class="required">：</span></label></span>
+        <select class="span4 m-wrap" id="HaverID">
+
+            @{
+                int id = 0;
+                var name = "";
+                if (Session["id"] != null)
+                {
+                    id = Convert.ToInt32(Session["id"]);
+                    Dal.EmployeeDal emdal = new Dal.EmployeeDal();
+                    Model.EmployeeInfo em = emdal.GetEmployeerByID(id);
+                    name = em.LoginName;
+                }
+                else
+                {
+                    name = "请选择...";
+                }
+            }
+
+            <option value="@id">@name</option>
+            @{
+                foreach (var item in emlist.Where(a => a.ID != 1))
+                {
+                <option value="@item.ID">@item.LoginName</option>
+                }
+            }
+        </select>
+        <a class="btn mini red giveuerrole" onclick=""><i class="icon-edit"></i>授权角色</a>
+        <a class="btn mini black delrole"><i class="icon-trash "></i>删除角色</a>
+    </div>
+</div>
+
+
+<h4 class="label label-warning">（一）角色分配</h4>
+
+<div class="control-group">
+    <label class="control-label"><b class="badge badge-important">成员资格</b></label>
+    <div class="controls">
+        @{
+            foreach (var item in roles)
+            {
+            <label class="radio">
+                <span>
+                    <input type="radio" name="optionsRadios"  value="@item.ID"></span>
+            </label>
+                if (item.ID == 1)
+                {
+            <b class="badge badge-success">@item.RoleName</b><b style="color: red;">所有权限</b><hr />
+           
+                }
+                else
+                {///Permission/ExeGetPerByRoleID?RoleID=@item.ID&RoleName=@item.RoleName
+            <b class="badge badge-success">@item.RoleName</b><a href="#" class="updrolepers" getid="@item.ID" getrolename="@item.RoleName">角色权限</a><hr />
+           
+                }
+            }
+        }
+    </div>
+</div>
+
+
+@*弹框开始*************************************************************@
+
+@{
+    if (persByRoID != null)
+    {
+    
+    <div id="updatediv" class="modal-scrollable" style="z-index: 10050;">
+        <div id="responsive" class="modal hide fade in modal-overflow" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: 0px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h3 style="color: red;">角色权限详情</h3>
+                <h4 style="color: white;" id="rolename" class="badge badge-success" roleid="@Session["RoleID"]" >@Session["RoleName"]</h4>
+            </div>
+            <div class="modal-body">
+                @{
+                    
+                    <b class="badge badge-important" style="float: left; clear: both;">角色已有的权限</b>
+                    
+        foreach (var item in persByRoID)
+        {
+            foreach (var p in perslist.Where(a => a.ParentID == null && a.ID == item.PermissionID))
+            {                 
+                    <ul style="float: left;">
+                        <li class="badge badge-success">@p.PageName<input type="checkbox" class="ckbt" checked style="float: left;"  value="@p.ID" getid="@p.ID" /></li>
+
+                        @{
+                foreach (var c in perslist.Where(a => a.ParentID == p.ID))
+                { 
+                            <li>
+                                <input type="checkbox" checked value="@c.ID"/>@c.PageName</li>
+                }
+                        }
+                    </ul>
+            }
+        }
+                        
+                        
+                        
+                        
+                    <b class="badge badge-important" style="float: left; clear: both;">角色未有的权限</b>
+        foreach (var p in NotPerByRoId.Where(a => a.ParentID == null))
+        {                     
+                    <ul style="float: left;">
+                        <li class="badge badge-success">@p.PageName<input type="checkbox"  class="ckbt" style="float: left;"  value="@p.ID" getid="@p.ID" /></li>
+                        @{
+            foreach (var c in NotPerByRoId.Where(a => a.ParentID == p.ID))
+            { 
+                            <li>
+                                <input type="checkbox" value="@c.ID"/>@c.PageName</li>
+            }
+                        }
+                    </ul>
+        }
+
+                }
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn" id="close">关闭</button>
+                <button type="button" class="btn green" id="change"><i class="icon-pencil"></i>更新</button>
+            </div>
+
+        </div>
+    </div>
+    
+    }
+}
+
+@*弹框结束*************************************************************@

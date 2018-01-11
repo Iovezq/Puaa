@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "AddLists";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "个人中心";
+}
+
+<script>
+
+    $(function () {
+        $("#left_menu > li").eq(3).addClass("active").siblings().removeClass("active");
+        $("#left_menu > li").eq(3).find("ul li").eq(0).addClass("active");
+
+        //添加
+        $("#addCalendar").click(function () {
+            var params = { Schedule: $("#Schedule").val(), ActionTime: $("#ActionTime").val() };
+            $.post('/Home/AddCalendar?method=add', params, function (rs) {
+
+                if (rs) {
+                    alert("添加成功！");
+                    location.href = "/Home/MyLists";//添加成功，跳转到日程页面
+                } else {
+                    alert("添加失败！");                   
+                }
+            });
+        });
+
+
+    });
+
+</script>
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">个人中心</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">添加日程</a>
+        </li>
+
+    </ul>
+
+}
+
+<h2>添加日程</h2>
+
+
+<div class="portlet box blue">
+
+    <div class="portlet-title">
+
+        <div class="caption"><i class="icon-coffee"></i>添加日程</div>
+
+    </div>
+
+    <div class="portlet-body form">
+
+        <!-- BEGIN FORM-->
+
+        <form class="form-horizontal">
+
+            <div class="control-group">
+                <label class="control-label"><i class="icon-calendar"></i>日程安排</label>
+                <div class="controls">
+                    <div class="input-append date form_datetime">
+                        <textarea role="3" rows="6" id="Schedule"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><i class="icon-calendar"></i>执行时间</label>
+                <div class="controls">
+                    <div class="input-append date form_datetime">
+                        <input size="16" type="text" value="" id="ActionTime"class="m-wrap">
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"></label>
+                <div class="controls">
+                    <a class="btn blue" data-toggle="modal" id="addCalendar"><i class="icon-calendar"></i>添加</a>
+                </div>
+            </div>
+
+        </form>
+
+
+    </div>
+
+</div>

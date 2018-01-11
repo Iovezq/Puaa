@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "CheckRecord";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "考勤管理";
+}
+<script>
+
+    $(function () {
+
+        //$("#left_menu > li").eq(10).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(10).find("ul li").eq(2).addClass("active");
+
+        $(".员工考勤管理").addClass("active").siblings().removeClass("active");
+        $(".查看我的签到记录").addClass("active");
+    });
+
+</script>
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">考勤管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">查看我的签到记录</a>
+        </li>
+
+    </ul>
+
+}
+
+<h2>查看我的签到记录</h2>
+
+@{
+    Model.EmployeeInfo em = (Model.EmployeeInfo)Session["Employeer"];
+
+    //根据id查询考勤表(多条)
+    List<Model.TimeSheet> tses = (List<Model.TimeSheet>)ViewBag.manyts;
+    
+}
+<div class="portlet-body">
+
+    <table class="table table-striped table-bordered table-advance table-hover">
+
+        <thead>
+
+            <tr>
+                <th><i class="icon-user"></i>姓名</th>
+                <th><i class="icon-check">规定签到时间</i></th>
+                <th><i class="icon-heart"></i>签到时间</th>
+                <th><i class="icon-check-empty"></i>规定签退时间</th>
+                <th><i class="icon-heart-empty"></i>签退时间</th>
+                <th><i class="icon-lock"></i>签到状态</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+            @{
+                foreach (var item in tses)
+                {
+                    var name = "";
+                    if(item.EmployeeID==em.ID){
+                        name = em.LoginName;
+                    }
+                <tr>
+                    <td>@name</td>
+                    <td>@item.OfficeHour</td>
+                    <td>@item.Check_inTime</td>
+                    <td>@item.QuittingTime</td>
+                    <td>@item.SignBackTime</td>
+                    <td><span class="label label-info">@item.Remark</span></td>
+                </tr>
+                }
+            }
+
+
+
+
+        </tbody>
+
+    </table>
+
+</div>

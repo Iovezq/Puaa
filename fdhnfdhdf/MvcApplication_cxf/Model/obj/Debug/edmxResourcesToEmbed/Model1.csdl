@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="testModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="testEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="Calendar" EntityType="testModel.Calendar" />
+    <EntitySet Name="Dept" EntityType="testModel.Dept" />
+    <EntitySet Name="Employee_PermissionInfo" EntityType="testModel.Employee_PermissionInfo" />
+    <EntitySet Name="Employee_RoleInfo" EntityType="testModel.Employee_RoleInfo" />
+    <EntitySet Name="EmployeeInfo" EntityType="testModel.EmployeeInfo" />
+    <EntitySet Name="GetEmailMessages" EntityType="testModel.GetEmailMessages" />
+    <EntitySet Name="Payroll" EntityType="testModel.Payroll" />
+    <EntitySet Name="PermissionInfo" EntityType="testModel.PermissionInfo" />
+    <EntitySet Name="PostInfo" EntityType="testModel.PostInfo" />
+    <EntitySet Name="RoleInfo" EntityType="testModel.RoleInfo" />
+    <EntitySet Name="RoleInfo_PermissionInfo" EntityType="testModel.RoleInfo_PermissionInfo" />
+    <EntitySet Name="SalaryRecord" EntityType="testModel.SalaryRecord" />
+    <EntitySet Name="SendEmailMessages" EntityType="testModel.SendEmailMessages" />
+    <EntitySet Name="TimeSheet" EntityType="testModel.TimeSheet" />
+  </EntityContainer>
+  <EntityType Name="Calendar">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="Int32" />
+    <Property Name="Schedule" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+    <Property Name="ScheduleDate" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+    <Property Name="ActionTime" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Dept">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="DeptCode" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+    <Property Name="DeptName" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+    <Property Name="DeptDuties" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Employee_PermissionInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeId" Type="Int32" />
+    <Property Name="PermissionID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Employee_RoleInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="Int32" />
+    <Property Name="RoleID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="EmployeeInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="LoginName" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+    <Property Name="LoginPassword" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+    <Property Name="EmployeeHead" Type="String" MaxLength="128" Unicode="false" FixedLength="false" />
+    <Property Name="Sex" Type="Int32" />
+    <Property Name="IDNumber" Type="Int64" />
+    <Property Name="BirthDay" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+    <Property Name="Phone" Type="Int64" />
+    <Property Name="Email" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+    <Property Name="EmployeeAddress" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+    <Property Name="Degree" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+    <Property Name="PostID" Type="Int32" />
+    <Property Name="DeptID" Type="Int32" />
+    <Property Name="EmployeeProfile" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+    <Property Name="Hiredate" Type="DateTime" Precision="3" />
+    <Property Name="Wage" Type="Int32" />
+  </EntityType>
+  <EntityType Name="GetEmailMessages">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="SenderID" Type="Int32" />
+    <Property Name="HaverID" Type="Int32" />
+    <Property Name="Title" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+    <Property Name="Content" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+    <Property Name="SendTime" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+    <Property Name="IsRead" Type="Int32" />
+    <Property Name="IsDel" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Payroll">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="BasicWage" Type="Int32" />
+    <Property Name="LunchAllowance" Type="Int32" />
+    <Property Name="MeritPay" Type="Int32" />
+    <Property Name="TrafficAllowance" Type="Int32" />
+    <Property Name="CommunicationAllowance" Type="Int32" />
+    <Property Name="EmployeeId" Type="Int32" />
+  </EntityType>
+  <EntityType Name="PermissionInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="PageUrl" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+    <Property Name="PageIcon" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+    <Property Name="PageName" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+    <Property Name="ParentID" Type="Int32" />
+    <Property Name="Remark" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="PostInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="JobTitle" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+    <Property Name="JobDescription" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+    <Property Name="DeptID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="RoleInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleName" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="RoleInfo_PermissionInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleId" Type="Int32" />
+    <Property Name="PermissionID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="SalaryRecord">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeId" Type="Int32" />
+    <Property Name="TotalSalary" Type="Int32" />
+    <Property Name="PayTime" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="SendEmailMessages">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="SenderID" Type="Int32" />
+    <Property Name="HaverID" Type="Int32" />
+    <Property Name="Title" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+    <Property Name="Content" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+    <Property Name="SendTime" Type="String" MaxLength="64" Unicode="false" FixedLength="false" />
+    <Property Name="IsSend" Type="Int32" />
+    <Property Name="IsRead" Type="Int32" />
+    <Property Name="IsDel" Type="Int32" />
+  </EntityType>
+  <EntityType Name="TimeSheet">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="Int32" />
+    <Property Name="OfficeHour" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+    <Property Name="QuittingTime" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+    <Property Name="Check_inTime" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+    <Property Name="SignBackTime" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+    <Property Name="Check_inType" Type="Int32" />
+    <Property Name="SignBackType" Type="Int32" />
+    <Property Name="Remark" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
+  </EntityType>
+</Schema>

@@ -1,0 +1,242 @@
+﻿@{
+    ViewBag.Title = "SendEmail";
+    Layout = "~/Views/Email/_EmailLayoutPage1.cshtml";
+    ViewBag.subTitle = "信息交流管理";
+}
+
+<script>
+
+    $(function () {
+        //菜单栏样式
+        //$("#left_menu > li").eq(8).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(8).find("ul li").eq(1).addClass("active").siblings().removeClass("active");
+
+        $(".信息交流管理").addClass("active").siblings().removeClass("active");
+        $(".发送邮件").addClass("active");
+
+        //单击收件箱时为它添加样式
+        $("#childmenu >li").eq(1).addClass("active").siblings().removeClass("active");
+
+
+        //发送
+        $(".send").click(function () {
+            //获取添加的数据
+            var params = { Title: $("#title").val(), Content: $("#content").val(), HaverID: $("#HaverID").val() };
+            $.post('/Email/DealAdd?way=send', params, function (rs) {
+                if (rs) {
+                    alert("发送成功！");
+                    location.href = "/Email/SendEmail";//添加成功,刷新本页面
+                } else if (rs) {
+                    alert("发送失败！");
+                }
+            });
+        });
+
+
+        //保存到草稿箱
+        $(".addsend").click(function () {
+            //获取添加的数据
+            var params = { Title: $("#title").val(), Content: $("#content").val(), HaverID: $("#HaverID").val() };
+            $.post('/Email/DealAdd?way=addsend', params, function (rs) {
+                if (rs) {
+                    alert("保存成功！");
+                    location.href = "/Email/SendEmail";//添加成功,刷新本页面
+                } else if (rs) {
+                    alert("保存失败！");
+                }
+            });
+        });
+
+        //群发（打开弹框）
+        $(".addsends").click(function () {
+            //显示弹框
+            $("#updatediv").modal("show");
+            //设置弹框
+            var needtop = $(window).height() / 2 - $("#responsive").height() / 2;
+            $("#responsive").css({ top: needtop });
+        });
+
+        //关闭弹框
+        $("#close").click(function () {
+            $("#updatediv").hide();
+            location.href = "/Email/SendEmail";//刷新本页面
+        });
+
+        //全选与反选
+        $(".group-checkable").click(function () {
+            if ($(this).is(":checked")) {
+                $(".ckb").parent().addClass("checked");
+                $(".ckb").attr("checked", "checked");
+            } else {
+                $(".ckb").parent().removeClass("checked");
+                //移除 $(".ckb")的checked属性
+                $("input").filter(":checkbox").removeAttr("checked");
+            }
+        });
+        //一个复选框没有选中则表头的复选框为未选
+        $(".ckb").click(function () {
+
+            var ck = $(".ckb").parent().length;
+            var cked = 0;
+            $(".ckb").each(function (index, item) {
+                if ($(item).is(":checked")) {
+                    cked = cked + 1;
+                }
+            });
+            //alert("全部"+ck+"选中"+cked)
+            if (cked < ck) {
+                $(".group-checkable").parent().removeClass("checked");
+            } else if (cked = ck) {
+                $(".group-checkable").parent().addClass("checked");
+            }
+        });
+
+
+        //群发（发送）
+        $(".sends").click(function () {
+            var ids = "";
+            $(".ckb").each(function (index, item) {
+                if ($(item).is(":checked")) {
+                    ids += $(item).val() + ",";
+                }
+            });
+            //获取添加的数据
+            var params = { Title: $("#title").val(), Content: $("#content").val(), ids: ids };
+            $.post('/Email/DealAdd?way=sendmany', params, function (rs) {
+                if (rs)
+                {
+                    alert("发送成功！");
+                    location.href = "/Email/SendEmail";//添加成功,刷新本页面
+                }
+            });
+        });
+
+    });
+
+</script>
+<style>
+
+    li {
+    list-style:none;
+    }
+
+</style>
+@section subnavgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">信息交流管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">发送邮件</a>
+        </li>
+
+    </ul>
+
+}
+
+@{
+    
+
+    //查询所有员工
+    List<Model.EmployeeInfo> emlist = (List<Model.EmployeeInfo>)ViewBag.allem;
+}
+
+
+
+<div class="span8">
+
+    <!-- BEGIN VALIDATION STATES-->
+
+    <div class="well">
+        <div class="portlet-body form">
+
+            <!-- BEGIN FORM-->
+
+            <form action="#" id="form_sample_1" class="form-horizontal" novalidate="novalidate">
+
+                <div class="control-group">
+                    <label class="control-label">邮件标题&nbsp;&nbsp;</label>
+                    <div class="controls">
+                        <select class="span6 m-wrap" id="title">
+                            <option value="">选择...</option>
+                            <option value="工作任务">工作任务</option>
+                            <option value="请假">请假</option>
+                            <option value="闲聊">闲聊</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">邮件内容&nbsp;&nbsp;</label>
+                    <div class="controls">
+                        <textarea cols="2" rows="6" style="margin: 0px; height: 132px; width: 321px;" id="content"></textarea>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">收件人<span class="required">*</span></label>
+                    <div class="controls">
+                        <span class="help-block">请选择收件人：</span>
+                        <select class="span6 m-wrap" id="HaverID">
+                            <option value="">选择...</option>
+                            @{
+                                foreach (var item in emlist)
+                                {
+                                   
+                                <option value="@item.ID">@item.LoginName</option>
+                                    
+                               
+                                }
+                            }
+                        </select>
+
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <button type="button" class="btn send">发送</button>
+                    <button type="button" class="btn green addsend">保存到草稿箱</button>
+                    <button type="button" class="btn red addsends">群发</button>
+                </div>
+
+            </form>
+
+            <!-- END FORM-->
+        </div>
+    </div>
+    <!-- END VALIDATION STATES-->
+
+</div>
+
+
+@*弹框开始*************************************************************@
+<div id="updatediv" class="modal-scrollable" style="z-index: 10050; display: none;">
+    <div id="responsive" class="modal hide fade in modal-overflow" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 200px; margin-left: -50px; margin-top: 0px;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h3>收件人</h3>
+        </div>
+        <div class="modal-body">
+            <input type="checkbox" value="" class="group-checkable" />全选
+            <ul>
+                @{foreach (var item in emlist)
+                  {
+                    
+                      <li><input type="checkbox" value="@item.ID" class="ckb" />@item.LoginName</li>  
+                  }}
+            </ul>
+
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn sends">发送</button>
+            <button type="button" data-dismiss="modal" class="btn" id="close">取消</button>
+        </div>
+
+    </div>
+</div>
+
+@*弹框结束*************************************************************@

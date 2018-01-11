@@ -1,0 +1,256 @@
+﻿@{
+    ViewBag.Title = "Paylist";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "薪酬管理";
+}
+<script>
+
+    $(function () {
+
+        //$("#left_menu > li").eq(7).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(7).find("ul li").eq(0).addClass("active");
+
+        $(".薪酬管理").addClass("active").siblings().removeClass("active");
+        $(".查询工资").addClass("active");
+
+        //编辑
+        $(".upd").click(function () {
+            //显示弹框
+            //$("#updatediv").show();
+            $("#updatediv").modal("show");
+            //设置弹框
+            var needtop = $(window).height() / 2 - $("#responsive").height() / 2;
+            $("#responsive").css({ top: needtop });
+            //取得表中的值 
+            var id = $(this).parent().parent().find("td").eq(0).attr("getid");
+            var name = $(this).parent().parent().find("td").eq(0).html();
+            var BasicWage = $(this).parent().parent().find("td").eq(1).html();
+            var LunchAllowance = $(this).parent().parent().find("td").eq(2).html();
+            var MeritPay = $(this).parent().parent().find("td").eq(3).html();
+            var TrafficAllowance = $(this).parent().parent().find("td").eq(4).html();
+            var CommunicationAllowance = $(this).parent().parent().find("td").eq(5).html();
+            //赋予弹框表中的值
+            $("#name").val(name);
+            $("#name").attr("emid", id);
+            $("#BasicWage").val(BasicWage);
+            $("#LunchAllowance").val(LunchAllowance);
+            $("#MeritPay").val(MeritPay);
+            $("#TrafficAllowance").val(TrafficAllowance);
+            $("#CommunicationAllowance").val(CommunicationAllowance);
+
+        });
+
+
+        //更新
+        $("#change").click(function () {
+            var parms = {
+                id: $("#name").attr("emid"),
+                BasicWage: $("#BasicWage").val(),
+                LunchAllowance: $("#LunchAllowance").val(),
+                MeritPay: $("#MeritPay").val(),
+                TrafficAllowance: $("#TrafficAllowance").val(),
+                CommunicationAllowance: $("#CommunicationAllowance").val()
+            };
+            $.post('/Payroll/ExeUpdPay', parms, function (rs) {
+                if (rs) {
+                    alert("修改成功！");
+                    $("#updatediv").hide();
+                    location.href = "/Payroll/Paylist"; //刷新页面
+                }
+            });
+        });
+
+        //工资发送
+        $(".paySalary").click(function () {
+
+            //获取该员工id
+            var id = $(this).parent().parent().find("td").eq(0).attr("getid");
+            //获取该员工的总工资
+            var salary = $(this).parent().parent().find("td").eq(6).html();
+            $.post('/Payroll/Paylist', { id: id, salary: salary }, function (rs) {
+         
+                if (rs == "0") {
+                    alert("发放成功！");
+                }
+                else if (rs == "1") {
+                    alert("这个月的工资已经发放！");
+                }
+            });
+
+        });
+
+
+    });
+
+</script>
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">薪酬管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">查询工资</a>
+        </li>
+
+    </ul>
+
+}
+
+@{
+    //查询所有员工
+    List<Model.EmployeeInfo> emlist = (List<Model.EmployeeInfo>)ViewBag.allem;
+
+    //查询所有员工工资
+    List<Model.Payroll> allPays = (List<Model.Payroll>)ViewBag.allPays;
+}
+<h2>查询工资</h2>
+
+<div class="btn-group">
+    <a href="/Payroll/addPay" class="btn red">新增工资<i class="icon-plus"></i>
+    </a>
+</div>
+<br />
+<br />
+
+<div class="portlet box red">
+
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-cogs"></i>查询工资</div>
+        <div class="tools">
+            <a href="javascript:;" class="collapse"></a>
+            <a href="#portlet-config" data-toggle="modal" class="config"></a>
+            <a href="javascript:;" class="reload"></a>
+            <a href="javascript:;" class="remove"></a>
+        </div>
+    </div>
+
+    <div class="portlet-body flip-scroll" style="display: block;">
+        <table class="table-bordered table-striped table-condensed flip-content">
+            <thead class="flip-content">
+                <tr>
+                    <th>员工</th>
+                    <th>基本工资</th>
+                    <th>午餐补助</th>
+                    <th>绩效工资</th>
+                    <th>交通补助</th>
+                    <th>通讯补助</th>
+                    <th>总工资</th>
+                    <th>操作</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+                @{
+                    foreach (var pay in allPays)
+                    {
+                    <tr style="text-align: center;">
+                        @{
+                        var name = "";
+                        foreach (var people in emlist)
+                        {
+                            if (pay.EmployeeId == people.ID)
+                            {
+                                name = people.LoginName;
+                            }
+                        }
+                        }
+                        <td getid="@pay.EmployeeId">@name</td>
+                        <td>@pay.BasicWage</td>
+                        <td>@pay.LunchAllowance</td>
+                        <td>@pay.MeritPay</td>
+                        <td>@pay.TrafficAllowance</td>
+                        <td>@pay.CommunicationAllowance</td>
+                        @{
+                        int? toltal = pay.BasicWage + pay.LunchAllowance + pay.MeritPay + pay.TrafficAllowance + pay.CommunicationAllowance;                   
+                        }
+                        <td>@toltal</td>
+                        <td>
+                            <a href="#" class="btn mini green upd"><i class="icon-edit"></i>更新</a>
+                            <a href="#" class="btn mini red paySalary"><i class="icon-credit-card "></i>发送</a>
+                        </td>
+                    </tr>
+                    }
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+@*弹框开始*************************************************************@
+<div id="updatediv" class="modal-scrollable" style="z-index: 10050; display: none;">
+    <div id="responsive" class="modal hide fade in modal-overflow" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: 0px;">
+
+        <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
+            <h3>修改工资</h3>
+
+        </div>
+
+        <div class="modal-body">
+            <div class="span6">
+                <form action="#" class="form-horizontal" method="post">
+                    <div class="control-group">
+                        <div class="controls">
+                            <span class="help-block">员工姓名：</span>
+                            <input class="span6 m-wrap" type="text" maxlength="15" size="15" emid="" id="name" readonly>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <span class="help-block">基本工资：</span>
+                            <input class="span6 m-wrap" type="text" maxlength="15" size="15" id="BasicWage">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <span class="help-block">午餐补助：</span>
+                            <input class="span6 m-wrap" type="text" maxlength="15" size="15" id="LunchAllowance" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <span class="help-block">绩效工资：</span>
+                            <input class="span6 m-wrap" type="text" maxlength="15" size="15" id="MeritPay" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <span class="help-block">交通补助：</span>
+                            <input class="span6 m-wrap" type="text" maxlength="15" size="15" id="TrafficAllowance" />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <span class="help-block">通讯补助：</span>
+                            <input class="span6 m-wrap" type="text" maxlength="15" size="15" id="CommunicationAllowance" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn">关闭</button>
+            <button type="button" class="btn blue" id="change">更新</button>
+        </div>
+
+    </div>
+</div>
+
+@*弹框结束*************************************************************@

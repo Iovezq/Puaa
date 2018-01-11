@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "SelProfile";
+    Layout = "~/Views/Employeer/_EmployeerLayoutPage1.cshtml";
+    ViewBag.subTitle = "员工管理";
+}
+
+<script>
+
+    $(function () {
+
+        $("#childmenu >li").eq(0).addClass("active").siblings().removeClass("active");
+    });
+
+</script>
+
+@section subnavgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">员工管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="/employeer/employeerlist">员工列表</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li><a href="#"></a>个人信息</li>
+    </ul>
+
+}
+
+<h2>个人信息</h2>
+<div class="tab-content">
+    @{
+        Model.EmployeeInfo em = (Model.EmployeeInfo)ViewBag.info;
+        List<Model.Dept> deptlist = (List<Model.Dept>)ViewBag.deptlist;//所有部门
+        List<Model.PostInfo> postlist = (List<Model.PostInfo>)ViewBag.postlist;//所有岗位
+    }
+
+
+    <div class="tab-pane profile-classic row-fluid active" id="tab_1_2">
+
+        <div class="span2">
+                <img src="@em.EmployeeHead" alt="">
+            </div>
+
+
+        <ul class="unstyled span10">
+
+            <li><span>员工姓名:</span>@em.LoginName</li>
+            <li class="muted"><span>登录密码:</span> @em.LoginPassword</li>
+            @{
+                     var ps="";
+                    if (em.Sex == 0)
+                    {
+                        ps = "男";
+                    }
+                    else
+                    {
+                        ps = "女";
+                    }
+                }
+            <li><span>性别:</span>@ps</li>
+            <li class="text-error"><span>身份证号:</span>@em.IDNumber</li>
+            <li><span>出生日期:</span>@em.BirthDay</li>
+            <li><span>联系电话:</span>@em.Phone</li>
+            <li><span>电子邮箱:</span><a href="#">@em.Email</a></li>
+            <li class="text-info"><span>家庭住址:</span><a href="#">@em.EmployeeAddress</a></li>
+            <li><span>学历:</span>@em.Degree</li>
+             @{
+                    var Pname = "";
+                    foreach (var item in postlist)
+                    {
+                        if(item.ID==em.PostID){
+                            Pname = item.JobTitle;
+                        }
+                        if(em.PostID==0){
+                            Pname = "BOSS";
+                        }
+                    }
+                    }
+            <li><span>岗位:</span>@Pname</li>
+            <li><span>工资:</span>
+
+                  @{
+                            //根据员工id查询员工工资
+                            Dal.EmployeeDal emdal = new Dal.EmployeeDal();
+                            Model.Payroll pay = emdal.GetPayByid(em.ID);
+                            string toltal = "";
+                            if (pay == null)
+                            {
+                                toltal = "待定";
+                            }
+                            else
+                            {
+                                toltal = (pay.BasicWage + pay.LunchAllowance + pay.MeritPay + pay.TrafficAllowance + pay.CommunicationAllowance).ToString();
+                            }     
+                                }
+                                @toltal
+
+            </li> 
+            <li><span>入职日期:</span>@em.Hiredate</li>
+            <li  class="text-success"><span>员工概况:</span>@em.EmployeeProfile</li>
+
+        </ul>
+
+    </div>
+  </div>

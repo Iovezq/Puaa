@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "DetailCalendar";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "个人中心";
+}
+
+<script>
+
+    $(function () {
+        $("#left_menu > li").eq(3).addClass("active").siblings().removeClass("active");
+        $("#left_menu > li").eq(3).find("ul li").eq(0).addClass("active");
+    });
+
+</script>
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">个人中心</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">我的详细日程</a>
+        </li>
+
+    </ul>
+
+}
+
+<div class="media">
+
+    <h3>我的详细日程</h3>
+
+
+
+
+    @{
+        Model.Calendar my = (Model.Calendar)ViewBag.OneCalendar;
+        Model.EmployeeInfo em = (Model.EmployeeInfo)ViewBag.OneEmployeer;
+        
+        
+        <a href="#" class="pull-left">
+
+            <img alt="" src="~/media/header/@em.EmployeeHead" class="media-object" style="width:200px;">
+        </a>
+        if (my != null)
+        {
+        <div class="media-body">
+            <h4 class="media-heading" style="font-size: 10px; color: lightblue;">@my.ActionTime<span style="font-size: 15px; color: gray;">@my.ScheduleDate / <a href="#">@em.LoginName</a></span></h4>
+            <p style="font-size: 15px; color: goldenrod;">
+                <br />@my.Schedule</p>
+        </div>
+        }           
+    }
+
+
+    <a href="/Home/MyLists" class="btn icn-only"><i class="m-icon-swapleft"></i>返回</a>
+    <hr />
+</div>

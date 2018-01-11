@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "AddRole";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "权限管理";
+}
+<script>
+
+    $(function () {
+
+        $(".员工权限管理").addClass("active").siblings().removeClass("active");
+        $(".角色管理").addClass("active");
+
+
+        //授权
+        $(".addRole").click(function () {
+
+            //获取角色名称
+            var rolename = $("#rolename").val();
+
+            //找到所有选中的复选框
+            var nums = "";
+            $(".control-group").find("ul li").find("input[type='checkbox']").each(function (index, item) {
+                if ($(item).is(":checked")) {
+                    //获得权限id
+                    nums += $(item).val() + ",";
+                }
+            });
+
+            $.get('/Permission/ExeAddRole', { rolename: rolename, nums: nums }, function (rs) {
+                
+                if (rs==0) {
+                    alert("添加成功！");
+                    location.href = "/Permission/rolemanage";
+                } else if(rs==1){
+                    alert("该角色已存在！");
+                    location.href = "/Permission/addrole";
+                }
+            });
+
+        });
+
+
+
+        //全选
+        $(".ckbt").click(function () {
+
+            if ($(this).is(":checked")) {
+                $(this).parent().parent().parent().parent().find("li").each(function (index, item) {
+                    $(item).find("div span").addClass("checked");
+                    $(item).find("div span input").attr("checked", "checked");
+                });
+
+            } else {
+                $(this).parent().parent().parent().parent().find("li").each(function (index, item) {
+                    $(item).find("div span").removeClass("checked");
+                    $(item).find("div span input").filter(":checkbox").removeAttr("checked");
+                });
+            }
+        });
+
+
+
+
+
+
+
+    });
+</script>
+
+<style>
+    li {
+        list-style-type: none;
+    }
+</style>
+
+<h4 class="btn disabled">添加角色</h4>
+<br />
+<br />
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">权限管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="/Permission/RoleManage">角色管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">添加角色</a>
+        </li>
+    </ul>
+
+}
+
+
+@{
+    //获取所有菜单栏
+    List<Model.PermissionInfo> alllist = (List<Model.PermissionInfo>)ViewBag.alllist;
+    
+}
+
+<div class="span11">
+
+    <div class="portlet box red ">
+
+        <div class="portlet-title">
+
+            <div class="caption"><i class="icon-reorder"></i>添加角色</div>
+
+            <div class="tools">
+
+                <a href="javascript:;" class="collapse"></a>
+
+                <a href="javascript:;" class="reload"></a>
+
+            </div>
+
+        </div>
+
+        <div class="portlet-body form">
+
+            <!-- BEGIN FORM-->
+
+            <form action="#" class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label">角色名称</label>
+                    <div class="controls">
+                        <input class="span6 m-wrap" id="rolename" type="text" maxlength="15" size="15">
+                    </div>
+                </div>
+                <div class="control-group">
+                    @{ 
+                        <b class="badge badge-important" style="float: left; clear: both;">分配角色权限</b>
+                        foreach (var p in alllist.Where(a => a.ParentID == null))
+                        {        
+                        <ul style="float: left;">
+                            <li class="badge badge-important">@p.PageName<input type="checkbox" class="ckbt" value="@p.ID"  style="float: left;" /></li>
+                            @{
+                            foreach (var c in alllist.Where(a => a.ParentID == p.ID))
+                            { 
+                                <li>
+                                    <input type="checkbox" value="@c.ID"/>@c.PageName</li>
+                            }
+                            }
+                        </ul>            
+                        }
+                    }
+                </div>
+
+
+                <div class="controls">
+                    <a class="btn red addRole" data-toggle="modal"><i class="icon-plus-sign"></i>添加</a>
+                </div>
+            </form>
+
+            <!-- END FORM-->
+
+        </div>
+
+    </div>
+
+</div>

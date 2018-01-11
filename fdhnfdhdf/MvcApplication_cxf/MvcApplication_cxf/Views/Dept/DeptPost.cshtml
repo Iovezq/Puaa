@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "DeptPost";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "部门管理";
+}
+
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">部门管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">部门岗位</a>
+        </li>
+
+    </ul>
+
+}
+<script>
+
+    $(function () {
+        $("#left_menu > li").eq(4).addClass("active").siblings().removeClass("active");
+        $("#left_menu > li").eq(4).find("ul li").eq(0).addClass("active");
+
+    });
+</script>
+
+<h2>部门岗位</h2>
+
+
+<div class="span11">
+
+    <!-- BEGIN SAMPLE TABLE PORTLET-->
+
+    <div class="portlet">
+
+        <div class="portlet-title">
+
+            <div class="caption"><i class="icon-briefcase"></i>部门下的岗位信息</div>
+
+            <div class="tools">
+
+                <a href="javascript:;" class="collapse"></a>
+
+                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+
+                <a href="javascript:;" class="reload"></a>
+
+                <a href="javascript:;" class="remove"></a>
+
+            </div>
+
+        </div>
+
+        <div class="portlet-body">
+
+            <table class="table table-striped table-bordered table-advance table-hover">
+
+                <thead>
+                    <tr>
+                        <th><i class="icon-bitbucket">岗位</i></th>
+                        <th><i class="icon-bitbucket">所在部门</i></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        List<Model.PostInfo> list = (List<Model.PostInfo>)ViewBag.PostInfoList;
+                    }
+
+                    @{
+                        if (list.Count == 0)
+                        {
+                        <tr>
+                            <td colspan="6">
+                                <h1 style="color: red;"><i class="icon-bullhorn"></i></h1>
+                                <h4 class="text-error">该部门下还未有岗位。</h4>
+                            </td>
+                        </tr>
+                        }
+                    }
+
+                    @{
+                        foreach (var item in list)
+                        {
+                        <tr>
+                            <td><a href="/Dept/DeptEmployeer?postid=@item.ID&deptid=@item.DeptID">@item.JobTitle</a></td>
+                        
+                            @{
+                            //查询部门
+                            Dal.DeptDal ddal = new Dal.DeptDal();
+                            var d = ddal.GetDeptOne(item.DeptID);
+
+                            }
+                            <td>@d.DeptName</td> 
+                             </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- END SAMPLE TABLE PORTLET-->
+    <a href="/Dept/DeptList" class="btn icn-only"><i class="m-icon-swapleft"></i>返回</a>
+</div>
+
+

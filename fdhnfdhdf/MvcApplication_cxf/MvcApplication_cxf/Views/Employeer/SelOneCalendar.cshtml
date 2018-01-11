@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "SelOneCalendar";
+    Layout = "~/Views/Employeer/_EmployeerLayoutPage1.cshtml";
+    ViewBag.subTitle = "员工管理";
+}
+
+<script>
+
+    $(function () {
+
+        $("#childmenu >li").eq(2).addClass("active").siblings().removeClass("active");
+    });
+
+</script>
+
+@section subnavgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">员工管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="/employeer/employeerlist">员工列表</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li><a href="#"></a>个人日程</li>
+    </ul>
+
+}
+
+<h2>个人日程</h2>
+
+@{
+    List<Model.Calendar> clist = (List<Model.Calendar>)ViewBag.presonalCalendar;
+    List<Model.EmployeeInfo> emlist = (List<Model.EmployeeInfo>)ViewBag.emlist;
+
+    if (clist.Count > 0 && emlist.Count != 0)
+    {
+        
+    <div class="row-fluid">
+        <div class="span12">
+            <ul class="timeline">
+
+                @{
+                
+        foreach (var item in clist)
+        {
+                    <li class="timeline-blue">
+                        <div class="timeline-time">
+                            <span class="date">@item.ActionTime</span>
+                            <span class="time" style="font-size: 10px;">@item.ScheduleDate</span>
+                        </div>
+                        <div class="timeline-icon"><i class="icon-time"></i></div>
+                        <div class="timeline-body">
+
+                            @{
+            var name = "";
+            foreach (var it in emlist.Where(a => a.ID == item.EmployeeID))
+            {
+                name = it.LoginName;
+            }
+                            }
+                            <h4>@name 的日程安排 </h4>
+                            <div class="timeline-content">
+                                @item.Schedule
+                            </div>
+                        </div>
+                    </li>
+        }
+                }
+
+            </ul>
+        </div>
+    </div>
+    }
+    else
+    {
+        <h3 class="text-warning">他（她）还没有写日程哦。。。</h3>
+    }
+}
+
+
+

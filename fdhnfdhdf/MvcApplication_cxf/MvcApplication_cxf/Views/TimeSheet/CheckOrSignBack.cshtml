@@ -1,0 +1,242 @@
+﻿@{
+    ViewBag.Title = "CheckOrSignBack";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "考勤管理";
+    
+}
+<script>
+
+    $(function () {
+
+        //$("#left_menu > li").eq(10).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(10).find("ul li").eq(1).addClass("active");
+
+        $(".员工考勤管理").addClass("active").siblings().removeClass("active");
+        $(".签到退到").addClass("active");
+
+        //单击签到
+        $("#checkin").click(function () {
+
+            $.get('/TimeSheet/AddCheckin', function (rs) {
+                location.href = "/TimeSheet/CheckOrSignBack";
+                if (rs == 1) {
+                    alert("你今天已经签到过了！");
+                }
+            });
+
+
+        });
+
+        //单击签退
+        $("#checkout").click(function () {
+
+            $.get('/TimeSheet/AddCheckout', function (rs) {
+                location.href = "/TimeSheet/CheckOrSignBack";
+                if (rs == 1) {
+                    alert("你今天已经签退过了！");
+                } else if (rs == 0) {
+                    alert("你还未签到，不能签退。");
+                }
+            });
+
+
+
+        });
+
+
+    });
+
+</script>
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">考勤管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">签到/签退</a>
+        </li>
+
+    </ul>
+
+}
+
+<h2>签到/签退</h2>
+
+
+
+<div class="span11">
+
+    <!-- BEGIN SAMPLE TABLE PORTLET-->
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-bell"></i>签到/签退</div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+                <a href="#portlet-config" data-toggle="modal" class="config"></a>
+                <a href="javascript:;" class="reload"></a>
+                <a href="javascript:;" class="remove"></a>
+            </div>
+
+        </div>
+
+        <div class="portlet-body">
+            <table class="table table-striped table-bordered table-advance table-hover">
+                <thead>
+                    <tr>
+                        <th><i class="icon-briefcase"></i>编号</th>
+                        <th><i class="icon-user"></i>姓名</th>
+                        <th><i class="icon-time"></i>上班时间</th>
+                        <th><i class="icon-check">规定签到时间</i></th>
+                        <th><i class="icon-heart"></i>签到时间</th>
+                        <th><i class="icon-check-empty"></i>规定签退时间</th>
+                        <th><i class="icon-heart-empty"></i>签退时间</th>
+                        <th><i class="icon-lock"></i>签到状态</th>
+                        <th><i class="icon-unlock"></i>签退状态</th>
+                        <th><i class="icon-ok"></i>签到</th>
+                        <th><i class="icon-remove"></i>签退</th>
+                    </tr>
+
+                </thead>
+                @{
+                    Model.EmployeeInfo em = (Model.EmployeeInfo)Session["Employeer"];
+                    DateTime dt = DateTime.Now;
+                    Model.TimeSheet ts = ViewBag.timeinfo;
+                }
+
+
+
+
+                <tbody>
+
+                    <tr style="text-align: center;">
+                        <td>@em.ID</td>
+                        <td>@em.LoginName</td>
+                        <td>@dt.ToShortDateString()</td>
+                        <td>09:30</td>
+
+                        @{
+                            if (ts != null)
+                            { 
+                            <td>@ts.Check_inTime</td>
+                            }
+                            else
+                            {
+                            <td>00:00</td>
+                            }
+                        }
+
+                        <td>17:30</td>
+                        @{
+                            if (ts != null)
+                            {
+                                if (ts.SignBackTime != null)
+                                {
+                            <td>@ts.SignBackTime</td>
+                                }
+                                else
+                                {
+                            <td>00:00</td>
+                                }
+                            }
+                            else
+                            {
+                            <td>00:00</td>
+                            }
+                        }
+
+
+
+                        @{
+                            var isCheckin = "签到";
+                            var isCheckout = "签退";
+
+                            if (ts != null)
+                            {
+                                if (ts.Check_inType != null)
+                                {
+
+                                    if (ts.Check_inType == 1)
+                                    {
+                            <td><span class="label label-success">早到</span></td>
+                                    }
+                                    else if (ts.Check_inType == 0)
+                                    {
+                            <td><span class="label label-warning">迟到</span></td>
+                                    }
+                                }
+                                else
+                                {
+                            <td><span class="label label-info">未签到</span></td>
+                                }
+
+                                if (ts.SignBackType != null)
+                                {
+                                    if (ts.SignBackType == 1)
+                                    {
+                            <td><span class="label label-success">早退</span></td>
+                                    }
+                                    else if (ts.SignBackType == 0)
+                                    {
+                            <td><span class="label label-warning">迟退</span></td>
+                                    }
+                                }
+                                else
+                                {
+                            <td><span class="label label-info">未签退</span></td>
+                                }
+
+
+                                if (ts.Check_inTime != null)
+                                {
+                                    isCheckin = "已签到";
+                                }
+                                if (ts.SignBackTime != null)
+                                {
+                                    isCheckout = "已签退";
+                                }
+                            }
+                            else
+                            {
+                            <td><span class="label label-info">未签到</span></td>
+                            <td><span class="label label-info">未签退</span></td>
+                            }
+
+                        }
+
+
+                        <td><a class="btn mini blue " id="checkin"><i class="icon-edit"></i>@isCheckin</a>
+                        </td>
+                        <td><a class="btn mini blue " id="checkout"><i class="icon-edit"></i>@isCheckout</a>
+                        </td>
+                    </tr>
+
+
+
+
+
+
+
+
+                    <tr>
+                        <td colspan="11">
+                            <a href="/TimeSheet/CheckRecord" class="btn blue big xlarge">个人信息打卡详情
+                                <i class="m-icon-big-swapright m-icon-white"></i>
+
+                            </a>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- END SAMPLE TABLE PORTLET-->
+
+</div>

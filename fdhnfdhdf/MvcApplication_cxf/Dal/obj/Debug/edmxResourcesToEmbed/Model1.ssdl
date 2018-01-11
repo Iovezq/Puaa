@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="testModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="testModelStoreContainer">
+    <EntitySet Name="Calendar" EntityType="testModel.Store.Calendar" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Dept" EntityType="testModel.Store.Dept" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Employee_PermissionInfo" EntityType="testModel.Store.Employee_PermissionInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Employee_RoleInfo" EntityType="testModel.Store.Employee_RoleInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="EmployeeInfo" EntityType="testModel.Store.EmployeeInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GetEmailMessages" EntityType="testModel.Store.GetEmailMessages" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Payroll" EntityType="testModel.Store.Payroll" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PermissionInfo" EntityType="testModel.Store.PermissionInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PostInfo" EntityType="testModel.Store.PostInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RoleInfo" EntityType="testModel.Store.RoleInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RoleInfo_PermissionInfo" EntityType="testModel.Store.RoleInfo_PermissionInfo" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SalaryRecord" EntityType="testModel.Store.SalaryRecord" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SendEmailMessages" EntityType="testModel.Store.SendEmailMessages" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="TimeSheet" EntityType="testModel.Store.TimeSheet" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="Calendar">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="int" />
+    <Property Name="Schedule" Type="text" />
+    <Property Name="ScheduleDate" Type="varchar" MaxLength="32" />
+    <Property Name="ActionTime" Type="varchar" MaxLength="32" />
+  </EntityType>
+  <EntityType Name="Dept">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="DeptCode" Type="varchar" MaxLength="32" />
+    <Property Name="DeptName" Type="varchar" MaxLength="32" />
+    <Property Name="DeptDuties" Type="text" />
+  </EntityType>
+  <EntityType Name="Employee_PermissionInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeId" Type="int" />
+    <Property Name="PermissionID" Type="int" />
+  </EntityType>
+  <EntityType Name="Employee_RoleInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="int" />
+    <Property Name="RoleID" Type="int" />
+  </EntityType>
+  <EntityType Name="EmployeeInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="LoginName" Type="varchar" MaxLength="32" />
+    <Property Name="LoginPassword" Type="varchar" MaxLength="32" />
+    <Property Name="EmployeeHead" Type="varchar" MaxLength="128" />
+    <Property Name="Sex" Type="int" />
+    <Property Name="IDNumber" Type="bigint" />
+    <Property Name="BirthDay" Type="varchar" MaxLength="64" />
+    <Property Name="Phone" Type="bigint" />
+    <Property Name="Email" Type="varchar" MaxLength="64" />
+    <Property Name="EmployeeAddress" Type="text" />
+    <Property Name="Degree" Type="varchar" MaxLength="64" />
+    <Property Name="PostID" Type="int" />
+    <Property Name="DeptID" Type="int" />
+    <Property Name="EmployeeProfile" Type="text" />
+    <Property Name="Hiredate" Type="datetime" />
+    <Property Name="Wage" Type="int" />
+  </EntityType>
+  <EntityType Name="GetEmailMessages">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="SenderID" Type="int" />
+    <Property Name="HaverID" Type="int" />
+    <Property Name="Title" Type="varchar" MaxLength="32" />
+    <Property Name="Content" Type="text" />
+    <Property Name="SendTime" Type="varchar" MaxLength="64" />
+    <Property Name="IsRead" Type="int" />
+    <Property Name="IsDel" Type="int" />
+  </EntityType>
+  <EntityType Name="Payroll">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="BasicWage" Type="int" />
+    <Property Name="LunchAllowance" Type="int" />
+    <Property Name="MeritPay" Type="int" />
+    <Property Name="TrafficAllowance" Type="int" />
+    <Property Name="CommunicationAllowance" Type="int" />
+    <Property Name="EmployeeId" Type="int" />
+  </EntityType>
+  <EntityType Name="PermissionInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="PageUrl" Type="varchar" MaxLength="64" />
+    <Property Name="PageIcon" Type="varchar" MaxLength="64" />
+    <Property Name="PageName" Type="varchar" MaxLength="64" />
+    <Property Name="ParentID" Type="int" />
+    <Property Name="Remark" Type="text" />
+  </EntityType>
+  <EntityType Name="PostInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="JobTitle" Type="varchar" MaxLength="32" />
+    <Property Name="JobDescription" Type="text" />
+    <Property Name="DeptID" Type="int" />
+  </EntityType>
+  <EntityType Name="RoleInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RoleName" Type="varchar" MaxLength="32" />
+  </EntityType>
+  <EntityType Name="RoleInfo_PermissionInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RoleId" Type="int" />
+    <Property Name="PermissionID" Type="int" />
+  </EntityType>
+  <EntityType Name="SalaryRecord">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeId" Type="int" />
+    <Property Name="TotalSalary" Type="int" />
+    <Property Name="PayTime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="SendEmailMessages">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="SenderID" Type="int" />
+    <Property Name="HaverID" Type="int" />
+    <Property Name="Title" Type="varchar" MaxLength="32" />
+    <Property Name="Content" Type="text" />
+    <Property Name="SendTime" Type="varchar" MaxLength="64" />
+    <Property Name="IsSend" Type="int" />
+    <Property Name="IsRead" Type="int" />
+    <Property Name="IsDel" Type="int" />
+  </EntityType>
+  <EntityType Name="TimeSheet">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="EmployeeID" Type="int" />
+    <Property Name="OfficeHour" Type="varchar" MaxLength="32" />
+    <Property Name="QuittingTime" Type="varchar" MaxLength="32" />
+    <Property Name="Check_inTime" Type="varchar" MaxLength="32" />
+    <Property Name="SignBackTime" Type="varchar" MaxLength="32" />
+    <Property Name="Check_inType" Type="int" />
+    <Property Name="SignBackType" Type="int" />
+    <Property Name="Remark" Type="varchar" MaxLength="32" />
+  </EntityType>
+</Schema>

@@ -1,0 +1,420 @@
+﻿@{
+    ViewBag.Title = "EmployeerList";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "员工管理";
+}
+<script>
+
+    $(function () {
+
+        //$("#left_menu > li").eq(5).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(5).find("ul li").eq(0).addClass("active");
+
+        $(".员工管理").addClass("active").siblings().removeClass("active");
+        $(".员工列表").addClass("active");
+
+        //单击页数后变色
+        $(".page li").eq(@ViewBag.currentPage).addClass("active");
+
+        //删除
+        $(".delem").click(function () {
+            //获取被删除的员工id
+            var delid = $(this).attr("getdelid");
+
+            //传递到后台方法中执行
+            $.post("/Employeer/DelEmByID?delid=" + delid, function (rs) {
+                if (rs) {
+                    alert("解雇成功！");
+                    location.href = "/employeer/employeerlist";
+                }
+            });
+        });
+
+
+        //全选与反选
+        $(".group-checkable").click(function () {
+
+            if ($(this).is(":checked")) {
+                $(".ckb").parent().addClass("checked");
+                $(".ckb").attr("checked", "checked");
+            } else {
+                $(".ckb").parent().removeClass("checked");
+                //移除 $(".ckb")的checked属性
+                $("input").filter(":checkbox").removeAttr("checked"); 
+            }
+        });
+
+        //一个复选框没有选中则表头的复选框为未选中
+
+        $(".ckb").click(function () {
+
+            var ck = $(".ckb").parent().length;
+            var cked = 0;
+            $(".ckb").each(function (index, item) {
+                if ($(item).is(":checked")) {
+                    cked = cked + 1;
+                }
+            });
+            //alert("全部"+ck+"选中"+cked)
+            if (cked < ck) {
+                $(".group-checkable").parent().removeClass("checked");
+            } else if (cked = ck) {
+                $(".group-checkable").parent().addClass("checked");
+                
+            }
+        });
+
+
+        //删除多个员工
+        $(".delmanyem").click(function () {
+            var ids = "";
+            $(".ckb").each(function (index, item) {
+                if ($(item).is(":checked")) {
+                    ids += $(item).val() + ",";
+                }
+            });
+
+            $.post('/Employeer/ExeDelByIDs', { ids: ids }, function () {
+                
+                    alert("解雇成功！")
+                    location.href = "/employeer/employeerlist";
+                
+
+            });
+           
+        });
+
+
+        //搜索
+        $(".search").click(function () {
+            //alert($("#search").val());
+
+            $.post('/Employeer/EmployeerList', { searchContent: $("#search").val() }, function (rs) {
+                alert("正在搜索......")
+                location.href = "/employeer/employeerlist?searchContent=" + $("#search").val();
+            });
+        });
+
+    });
+
+    function selpagechage() {
+        location.href = "/Employeer/EmployeerList?hang=" + $("#selpage").val();
+    }
+
+</script>
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">员工管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">员工列表</a>
+        </li>
+
+    </ul>
+
+}
+<h2>员工列表</h2>
+<div class="row-fluid">
+
+    <div class="span12">
+
+        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+
+        <div class="portlet box purple">
+
+            <div class="portlet-title">
+
+                <div class="caption"><i class="icon-globe"></i>员工列表</div>
+
+                <div class="tools">
+
+                    <a href="javascript:;" class="collapse"></a>
+
+                    <a href="#portlet-config" data-toggle="modal" class="config"></a>
+
+                    <a href="javascript:;" class="reload"></a>
+
+                    <a href="javascript:;" class="remove"></a>
+
+                </div>
+
+            </div>
+
+            <div class="portlet-body">
+
+                <div class="clearfix">
+
+                    <div class="btn-group">
+
+                        <a href="/Employeer/AddEmployeer" class="btn purple">添加员工 <i class="icon-plus"></i>
+                        </a>
+
+                    </div>
+
+                    <div class="btn-group pull-right">
+
+                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                            工具 <i class="icon-angle-down"></i>
+
+                        </button>
+
+                        <ul class="dropdown-menu pull-right">
+
+                            <li><a href="#">打印</a></li>
+
+                            <li><a href="#">把整个页面以PDF格式文件保存</a></li>
+
+                            <li><a href="#">导出数据到Excel</a></li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div id="sample_1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <div id="sample_1_length" class="dataTables_length">
+                                <label>
+                                    <select size="1" name="sample_1_length" aria-controls="sample_1" class="m-wrap small" id="selpage" onchange="selpagechage();">
+                                        @{
+                                            if (Convert.ToInt32(ViewData["hang"]) == 5)
+                                            {
+                                            <option value="5" selected="selected">5行</option>
+                                            <option value="10">10行</option>
+                                            <option value="-1">全部</option>
+                                            }
+                                            else if (Convert.ToInt32(ViewData["hang"]) == 10)
+                                            {
+                                            <option value="5">5行</option>
+                                            <option value="10" selected="selected">10行</option>
+                                            <option value="-1">全部</option>
+                                            }
+                                            else
+                                            {
+                                            <option value="5">5行</option>
+                                            <option value="10">10行</option>
+                                            <option value="-1" selected="selected">全部</option>
+                                            }
+                                        }
+                                    </select>
+                                    记录每页的条数</label>
+                            </div>
+                        </div>
+
+
+                        <div class="span6">
+                            <div class="dataTables_filter" id="sample_1_filter">
+                                <label>
+                                    请输入员工姓名:
+                                    <input type="text" aria-controls="sample_1" class="m-wrap medium" id="search" value="@ViewBag.content"></label>
+                                <a class="purple small btn search"><i class="icon-search">搜索</i></a>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <table class="table table-striped table-bordered table-hover dataTable">
+
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" class="group-checkable"></th>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>身份证号</th>
+                                <th>联系电话</th>
+                                <th>电子邮箱</th>
+                                <th>所在岗位</th>
+                                <th>所在部门</th>
+                                <th>个人概况</th>
+                                <th>入职日期</th>
+                                <th>操作</th>
+                            </tr>
+
+                        </thead>
+
+                        @{
+                            //所有员工
+                            List<Model.EmployeeInfo> elist = ViewBag.EmployeerInfo as List<Model.EmployeeInfo>;
+
+                            //所有部门
+                            List<Model.Dept> deptlist = (List<Model.Dept>)ViewBag.deptlist;
+
+                            //所有岗位
+                            List<Model.PostInfo> postlist = (List<Model.PostInfo>)ViewBag.postlist;    
+                        }
+
+                        <tbody id="oForm">
+
+                            @{
+                                
+                                foreach (var item in elist)
+                                { 
+                                    
+                                <tr>
+
+                                    <td>
+
+                                        @{
+                                    if (item.ID == 1)
+                                    {<input type="checkbox" disabled /> }
+                                    else
+                                    {<input type="checkbox" class="ckb" name="hobby" value="@item.ID" /> }
+                                        }
+
+                                    </td>
+                                    <td><span class="label label-info">@item.LoginName</span></td>
+                                    <td>
+                                        @{
+                                    var sex = "";
+                                    if (item.Sex == 0)
+                                    {
+                                        sex = "男";
+                                    }
+                                    else
+                                    {
+                                        sex = "女";
+                                    }
+                                        }
+                                        @sex
+                                    </td>
+                                    <td style="color: lightgray;">@item.IDNumber</td>
+                                    <td style="color: gray;">@item.Phone</td>
+                                    <td>@item.Email</td>
+                                    <td><span class="label label-success">
+                                        @{
+                                    var pname = "";
+                                    var dname = "";
+                                    foreach (var p in postlist)
+                                    {
+                                        if (p.ID == item.PostID)
+                                        {
+                                            if (p.JobTitle.Length > 5)
+                                            { pname = p.JobTitle.Substring(0, 5); }
+                                            else
+                                            { pname = p.JobTitle; }
+                                        }
+                                    }
+                                    //根据员工岗位id查询部门id
+                                    Dal.DeptDal ddd = new Dal.DeptDal();
+                                    Model.PostInfo pp = ddd.GetDeptIDByPostID(item.PostID);
+                                    if (pp == null)
+                                    {
+                                        pname = "BOSS";
+                                        dname = "该岗位不属于任何部门";
+                                    }
+                                    else
+                                    {
+                                        foreach (var d in deptlist)
+                                        {
+
+                                            if (d.ID == pp.DeptID)
+                                            {
+                                                dname = d.DeptName;
+                                            }
+                                            if (pp.DeptID == null)
+                                            {
+                                                dname = "该岗位不属于任何部门";
+                                            }
+                                        }
+                                    }
+                                    
+                                                                     
+                                        }
+                                        @pname
+
+                                    </span></td>
+                                    <td><span class="label label-warning">
+                                        @dname
+                                    </span></td>
+                                    
+                                    <td><a href="/Employeer/SelProfile?id=@item.ID" class="btn mini purple">详</a></td>
+                                    <td>@item.Hiredate</td>
+
+                                    @{
+                                    if (item.ID == 1)
+                                    {
+                                        <td>
+                                            <input disabled style="width: 50px; height: 13px;">
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <a href="#" class="btn mini blue delem" getdelid="@item.ID"><i class="icon-trash "></i>解雇</a>
+                                        </td>
+                                    }
+                                    }
+
+                                </tr>
+                                }
+                                
+                            }
+
+                        </tbody>
+                    </table>
+
+
+                    <div class="row-fluid">
+
+                        <div class="span6">
+                            <div class="dataTables_info" id="sample_1_info">
+                                <a class="btn mini blue delmanyem"><i class="icon-trash ">解雇选中员工</i></a>
+                            </div>
+                        </div>
+                        <div class="span6">
+                            <div class="dataTables_paginate paging_bootstrap pagination">
+                                <ul class="page">
+                                    @{
+                                        var pre = ViewBag.currentPage - 1;
+                                        var cs = "";
+                                        if (pre < 1)
+                                        {
+                                            pre = 1;
+                                            cs = "disabled";
+                                        }
+                                    }
+
+                                    <li class="prev @cs"><a href="/Employeer/EmployeerList?page=@pre&hang=@ViewData["hang"]&searchContent=@ViewBag.content">← <span class="hidden-480">上一页</span></a></li>
+                                    @{
+                                        for (int i = 1; i <= ViewBag.totalPage; i++)
+                                        {
+                                        <li><a href="/Employeer/EmployeerList?page=@i&searchContent=@ViewBag.content&hang=@ViewData["hang"] ">@i</a></li>
+                                        }
+                                    }
+                                    @{
+                                        var next = ViewBag.currentPage + 1;
+                                        var css = "";
+                                        if (next > ViewBag.totalPage)
+                                        {
+                                            next = ViewBag.totalPage;
+                                            css = "disabled";
+                                        }
+                                    }
+                                    <li class="next @css"><a href="/Employeer/EmployeerList?page=@next&hang=@ViewData["hang"]&searchContent=@ViewBag.content"><span class="hidden-480">下一页</span> → </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- END EXAMPLE TABLE PORTLET-->
+
+    </div>
+
+</div>

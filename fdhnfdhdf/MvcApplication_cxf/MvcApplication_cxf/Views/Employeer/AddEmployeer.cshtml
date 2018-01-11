@@ -1,0 +1,295 @@
+﻿@{
+    ViewBag.Title = "AddEmployeer";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "员工管理";
+}
+<script src="~/media/js/ajaxfileupload.js"></script>
+<script>
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    };
+
+    $(function () {
+
+        //改变图片
+        $("#headimg").change(function () {
+            var objUrl = getObjectURL(this.files[0]);
+            console.log("objUrl = " + objUrl);
+            if (objUrl) {
+                $("#showimg").attr("src", objUrl);
+            }
+        });
+
+        //$("#left_menu > li").eq(5).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(5).find("ul li").eq(1).addClass("active");
+
+        $(".员工管理").addClass("active").siblings().removeClass("active");
+        $(".新增员工").addClass("active");
+        //最终提交
+        $("#submit").click(function () {
+            if (
+            $("input[name='EmployeeName']").val() == "" ||
+                $("input[name='EmployeeHead']").val() == "" ||
+            $("input[name='IDNumber']").val() == "" ||
+            $("input[name='Phone']").val() == "" ||
+            $("input[name='Email']").val() == "" ||
+            $("input[name='EmployeeAddress']").val() == "" ||
+            $("input[name='EmployeeProfile']").val() == "" ||
+            $("input[name='LoginPassword']").val() == ""
+            ) {
+                alert("请填入完整信息！");
+                $(this).attr("type", "button");
+            } else {
+                $(this).attr("type", "submit");
+            }
+
+        });
+
+    });
+
+
+    //文本框失去焦点事件
+
+    //验证身份证
+    function checkIDNumber() {
+        //获取身份证号码
+        var idCard = $("#IDNumber").val();
+        //验证是否正确
+        if (!idCard.match(/^[0-9]{17}(\d|x)$/i)) {
+            alert("身份证号码输入有误！");
+            return;
+        }
+    }
+    //验证电话
+    function checkPhone() {
+        //获取手机号码
+        var tel = $("#Phone").val();
+        //验证是否正确
+        if (!tel.match(/^1[34578]\d{9}$/)) {
+            alert("手机号码输入有误！");
+            return;
+        }
+    }
+    //验证邮箱
+    function checkEmail() {
+        //获取Email
+        var email = $("#Email").val();
+        //验证是否正确
+        $.post("/Employeer/AddEmployeer", { email: email }, function (rs) {
+            if (rs == 1) {
+                alert("邮箱输入有误！")
+                return;
+            }
+        })
+
+
+    }
+    //验证用户昵称(唯一)
+    function checkloginname() {
+        $.post('/Employeer/AddEmployeer', { xuname: $("#xuname").val() }, function (rs) {
+            if (rs == 2) {
+                alert("昵称已存在！");
+            } 
+         });
+    }
+
+</script>
+
+<style>
+    .img {
+        border: 2px solid white;
+        border-radius: 50%;
+        margin-left: 80px;
+    }
+</style>
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">员工管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">新增员工</a>
+        </li>
+
+    </ul>
+
+}
+<h2>新增员工</h2>
+
+
+@{
+    //所有部门
+    List<Model.Dept> deptlist = (List<Model.Dept>)ViewBag.deptlist;
+
+    //所有岗位
+    List<Model.PostInfo> postlist = (List<Model.PostInfo>)ViewBag.postlist;    
+}
+
+
+<div class="portlet box purple">
+
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-reorder"></i>新增员工</div>
+        <div class="tools">
+            <a href="javascript:;" class="collapse"></a>
+            <a href="#portlet-config" data-toggle="modal" class="config"></a>
+            <a href="javascript:;" class="reload"></a>
+            <a href="javascript:;" class="remove"></a>
+        </div>
+    </div>
+
+    <div class="portlet-body form">
+        <!-- BEGIN FORM-->
+        <form action="/Employeer/ExeAddEmployeer" class="form-horizontal form-row-seperated" name="file" id="form12" enctype="multipart/form-data" method="post">
+            <div class="control-group">
+                <label class="control-label">用户昵称</label>
+                <div class="controls">
+                    <input type="text" placeholder="用户昵称" class="m-wrap span5" name="LoginName" id="xuname" onchange="checkloginname()">
+                    <span class="help-inline">请输入用户昵称</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">用户密码</label>
+                <div class="controls">
+                    <input type="text" name="LoginPassword">
+                    <span class="help-block">请输入至少6位密码</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">员工姓名</label>
+                <div class="controls">
+                    <input type="text" placeholder="员工姓名" class="m-wrap span5" name="EmployeeName">
+                    <span class="help-inline">请输入真实姓名</span>
+                </div>
+            </div>
+            <div class="span2">
+                <img src="~/media/image/head.png" id="showimg" />
+            </div>
+            <div class="control-group">
+                <label class="control-label">员工头像</label><br />
+                <br />
+                <div class="controls">
+                    <input type="file" name="EmployeeHead" id="headimg" class="img" />
+                </div>
+            </div>
+
+
+            <div class="control-group">
+                <label class="control-label">身份证号</label>
+                <div class="controls">
+                    <input type="text" placeholder="身份证号" class="m-wrap span5" name="IDNumber" id="IDNumber" onchange="checkIDNumber()">
+                    <span class="help-inline">请填写正确的身份证号</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">性别</label>
+                <div class="controls">
+                    <select class="m-wrap span2" name="Sex">
+                        <option value="0">男</option>
+                        <option value="1">女</option>
+                    </select>
+                    <span class="help-block">选择你的性别</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">联系电话</label>
+                <div class="controls">
+                    <input type="text" class="m-wrap span5" placeholder="联系电话" name="Phone" id="Phone" onchange="checkPhone()">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">电子邮箱</label>
+                <div class="controls">
+                    <input type="text" class="m-wrap span5" name="Email" id="Email" onchange="checkEmail()">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">家庭住址</label>
+                <div class="controls">
+                    <input type="text" class="m-wrap span5" name="EmployeeAddress">
+                </div>
+            </div>
+
+            <div class="control-group last">
+                <label class="control-label">学历</label>
+                <div class="controls">
+                    <select class="m-wrap span5" name="Degree">
+                        <option value="本科">本科</option>
+                        <option value="专科">专科</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">岗位</label>
+                <div class="controls">
+                    <select class="m-wrap span5" name="PostID">
+                        @{
+                            foreach (var item in postlist.Where(a => a.ID != 1))
+                            {
+                            <option value="@item.ID">@item.JobTitle</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">员工概况</label>
+                <div class="controls">
+                    <textarea cols="30" rows="8" name="EmployeeProfile"></textarea>
+                </div>
+            </div>
+
+
+            <script>
+                $(function () {
+                    var t = null;
+                    time();
+                    function time() {
+                        dt = new Date();
+                        var y = dt.getFullYear();
+                        var mo = dt.getMonth() + 1;
+                        var d = dt.getDate();
+                        var h = dt.getHours();
+                        var m = dt.getMinutes();
+                        var s = dt.getSeconds();
+                        $("#show").val(y + "/" + mo + "/" + d + " " + h + ":" + m + ":" + s);
+                        t = setTimeout(time, 1000); //设定定时器，循环执行
+                    }
+                })
+            </script>
+
+
+            <div class="control-group">
+                <label class="control-label">入职日期:</label>
+                <div class="controls">
+
+                    <input type="text" readonly="" id="show" name="Hiredate">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn purple" id="submit"><i class="icon-ok"></i>添加</button>
+                <button type="button" class="btn">取消</button>
+            </div>
+        </form>
+        <!-- END FORM-->
+    </div>
+</div>

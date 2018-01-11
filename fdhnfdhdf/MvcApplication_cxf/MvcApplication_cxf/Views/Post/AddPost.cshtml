@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "AddPost";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "岗位管理";
+}
+<script>
+
+    $(function () {
+        $("#left_menu > li").eq(6).addClass("active").siblings().removeClass("active");
+        $("#left_menu > li").eq(6).find("ul li").eq(0).addClass("active");
+
+        //添加
+        $("#addPost").click(function () {
+            var params = { DeptID: $("#DeptID").val(), PostName: $("#PostName").val(), PostDuties: $("#PostDuties").val() };
+            $.post('/Post/ExeAddPost', params, function (rs) {
+
+                if (rs) {
+                    alert("添加成功！");
+                    location.href = "/Post/PostList";//添加成功，跳转到部门页面
+                } else {
+                    alert("添加失败！");
+                }
+            });
+        });
+
+    });
+
+</script>
+
+@{
+    List<Model.Dept> delist = ViewBag.deptlist as List<Model.Dept>;
+}
+
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">岗位管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">新增岗位</a>
+        </li>
+
+    </ul>
+
+}
+<h2>新增岗位</h2>
+<div class="span11">
+
+    <div class="portlet box yellow ">
+
+        <div class="portlet-title">
+
+            <div class="caption"><i class="icon-reorder"></i>添加岗位</div>
+
+            <div class="tools">
+
+                <a href="javascript:;" class="collapse"></a>
+
+                <a href="javascript:;" class="reload"></a>
+
+            </div>
+
+        </div>
+
+        <div class="portlet-body form">
+
+            <!-- BEGIN FORM-->
+
+            <form action="#" class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label">岗位名称</label>
+                    <div class="controls">
+                        <input class="span6 m-wrap" id="PostName" type="text" maxlength="15" size="15">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">所在部门</label>
+                    <div class="controls">
+                        <select id="DeptID">
+                            @{
+                                foreach (var item in delist)
+                                {
+                                <option value="@item.ID">@item.DeptName</option>
+                                }
+                            }
+                        </select>
+
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">岗位描述</label>
+                    <div class="controls">
+                        <textarea cols="2" rows="6" id="PostDuties"></textarea>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <a class="btn yellow" data-toggle="modal" id="addPost"><i class="icon-plus-sign"></i>添加</a>
+                </div>
+            </form>
+
+            <!-- END FORM-->
+
+        </div>
+
+    </div>
+
+</div>

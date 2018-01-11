@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "AddDept";
+    Layout = "~/Views/_MainLayoutPage.cshtml";
+    ViewBag.subTitle = "部门管理";
+}
+
+<script>
+
+    $(function () {
+        //$("#left_menu > li").eq(4).addClass("active").siblings().removeClass("active");
+        //$("#left_menu > li").eq(4).find("ul li").eq(1).addClass("active");
+
+        $(".部门管理").addClass("active").siblings().removeClass("active");
+        $(".新增部门").addClass("active");
+
+        //添加
+        $("#addDept").click(function () {
+            var params = {DeptName: $("#DeptName").val(), DeptDuties: $("#DeptDuties").val() };
+            $.post('/Dept/ExeAddDepts', params, function (rs) {
+
+                if (rs) {
+                    alert("添加成功！");
+                    location.href = "/Dept/DeptList";//添加成功，跳转到部门页面
+                } else {
+                    alert("添加失败！");
+                }
+            });
+        });
+
+
+    });
+
+</script>
+
+@section navgation
+{
+    <ul class="breadcrumb">
+        <li>
+            <i class="icon-home"></i>
+            <a href="#">部门管理</a>
+            <i class="icon-angle-right"></i>
+        </li>
+        <li>
+            <a href="#">添加部门</a>
+        </li>
+
+    </ul>
+
+}
+
+<h2>添加部门</h2>
+<div class="span11">
+
+    <div class="portlet box green ">
+
+        <div class="portlet-title">
+
+            <div class="caption"><i class="icon-reorder"></i>添加部门</div>
+
+            <div class="tools">
+
+                <a href="javascript:;" class="collapse"></a>
+
+                <a href="javascript:;" class="reload"></a>
+
+            </div>
+
+        </div>
+
+        <div class="portlet-body form">
+
+            <!-- BEGIN FORM-->
+
+            <form action="#" class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label">部门名称</label>
+                    <div class="controls">
+                        <input class="span6 m-wrap" id="DeptName" type="text" maxlength="39" size="39">
+                       
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">部门职责</label>
+                    <div class="controls">
+                        <textarea role="2" rows="6" id="DeptDuties"></textarea>
+                      
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <a class="btn green" data-toggle="modal" id="addDept"><i class="icon-plus-sign"></i>添加</a>
+                </div>
+            </form>
+
+            <!-- END FORM-->
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="testModelStoreContainer" CdmEntityContainer="testEntities">
+    <EntitySetMapping Name="Calendar">
+      <EntityTypeMapping TypeName="testModel.Calendar">
+        <MappingFragment StoreEntitySet="Calendar">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="Schedule" ColumnName="Schedule" />
+          <ScalarProperty Name="ScheduleDate" ColumnName="ScheduleDate" />
+          <ScalarProperty Name="ActionTime" ColumnName="ActionTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Dept">
+      <EntityTypeMapping TypeName="testModel.Dept">
+        <MappingFragment StoreEntitySet="Dept">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+          <ScalarProperty Name="DeptDuties" ColumnName="DeptDuties" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employee_PermissionInfo">
+      <EntityTypeMapping TypeName="testModel.Employee_PermissionInfo">
+        <MappingFragment StoreEntitySet="Employee_PermissionInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employee_RoleInfo">
+      <EntityTypeMapping TypeName="testModel.Employee_RoleInfo">
+        <MappingFragment StoreEntitySet="Employee_RoleInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmployeeInfo">
+      <EntityTypeMapping TypeName="testModel.EmployeeInfo">
+        <MappingFragment StoreEntitySet="EmployeeInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+          <ScalarProperty Name="LoginPassword" ColumnName="LoginPassword" />
+          <ScalarProperty Name="EmployeeHead" ColumnName="EmployeeHead" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
+          <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="EmployeeAddress" ColumnName="EmployeeAddress" />
+          <ScalarProperty Name="Degree" ColumnName="Degree" />
+          <ScalarProperty Name="PostID" ColumnName="PostID" />
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+          <ScalarProperty Name="EmployeeProfile" ColumnName="EmployeeProfile" />
+          <ScalarProperty Name="Hiredate" ColumnName="Hiredate" />
+          <ScalarProperty Name="Wage" ColumnName="Wage" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GetEmailMessages">
+      <EntityTypeMapping TypeName="testModel.GetEmailMessages">
+        <MappingFragment StoreEntitySet="GetEmailMessages">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+          <ScalarProperty Name="HaverID" ColumnName="HaverID" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="SendTime" ColumnName="SendTime" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+          <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Payroll">
+      <EntityTypeMapping TypeName="testModel.Payroll">
+        <MappingFragment StoreEntitySet="Payroll">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="BasicWage" ColumnName="BasicWage" />
+          <ScalarProperty Name="LunchAllowance" ColumnName="LunchAllowance" />
+          <ScalarProperty Name="MeritPay" ColumnName="MeritPay" />
+          <ScalarProperty Name="TrafficAllowance" ColumnName="TrafficAllowance" />
+          <ScalarProperty Name="CommunicationAllowance" ColumnName="CommunicationAllowance" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PermissionInfo">
+      <EntityTypeMapping TypeName="testModel.PermissionInfo">
+        <MappingFragment StoreEntitySet="PermissionInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PageUrl" ColumnName="PageUrl" />
+          <ScalarProperty Name="PageIcon" ColumnName="PageIcon" />
+          <ScalarProperty Name="PageName" ColumnName="PageName" />
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PostInfo">
+      <EntityTypeMapping TypeName="testModel.PostInfo">
+        <MappingFragment StoreEntitySet="PostInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+          <ScalarProperty Name="JobDescription" ColumnName="JobDescription" />
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoleInfo">
+      <EntityTypeMapping TypeName="testModel.RoleInfo">
+        <MappingFragment StoreEntitySet="RoleInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoleInfo_PermissionInfo">
+      <EntityTypeMapping TypeName="testModel.RoleInfo_PermissionInfo">
+        <MappingFragment StoreEntitySet="RoleInfo_PermissionInfo">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="PermissionID" ColumnName="PermissionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SalaryRecord">
+      <EntityTypeMapping TypeName="testModel.SalaryRecord">
+        <MappingFragment StoreEntitySet="SalaryRecord">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="TotalSalary" ColumnName="TotalSalary" />
+          <ScalarProperty Name="PayTime" ColumnName="PayTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SendEmailMessages">
+      <EntityTypeMapping TypeName="testModel.SendEmailMessages">
+        <MappingFragment StoreEntitySet="SendEmailMessages">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+          <ScalarProperty Name="HaverID" ColumnName="HaverID" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="SendTime" ColumnName="SendTime" />
+          <ScalarProperty Name="IsSend" ColumnName="IsSend" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+          <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeSheet">
+      <EntityTypeMapping TypeName="testModel.TimeSheet">
+        <MappingFragment StoreEntitySet="TimeSheet">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+          <ScalarProperty Name="OfficeHour" ColumnName="OfficeHour" />
+          <ScalarProperty Name="QuittingTime" ColumnName="QuittingTime" />
+          <ScalarProperty Name="Check_inTime" ColumnName="Check_inTime" />
+          <ScalarProperty Name="SignBackTime" ColumnName="SignBackTime" />
+          <ScalarProperty Name="Check_inType" ColumnName="Check_inType" />
+          <ScalarProperty Name="SignBackType" ColumnName="SignBackType" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
